@@ -35,8 +35,8 @@ class EnemyGenerator() {
     private fun redNormal():MutableList<Entity>{
         return mutableListOf(
             RedEnemyTest("test1",100,30),
-            RedElite("elite",120,80),
-            RedElite("elite",120,80),
+            RedElite("elite",120,60),
+            RedElite("elite",120,40),
             RedEnemyTest("test2",100,30),
             RedEnemyTest("test2",100,30),
             RedEnemyTest("test2",100,30),

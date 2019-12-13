@@ -200,7 +200,8 @@ class MainActivity : AppCompatActivity() {
 
             override fun onFinish() {
                 timer.cancel()
-                gameText.text = "Keep Fighting!"
+                if(game.battleStatus != 'D')
+                    gameText.text = "Keep Fighting!"
                 if(isPlayer) {
                     defCloud.visibility = View.INVISIBLE
                     defCloud.setImageResource(R.drawable.firingcloud)

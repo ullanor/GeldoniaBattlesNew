@@ -2,6 +2,7 @@ package com.example.geldonialinebattles
 
 import android.widget.ImageView
 import com.example.geldonialinebattles.Entities.Defender
+import com.example.geldonialinebattles.Entities.EliteDefender
 import com.example.geldonialinebattles.Entities.Entity
 import kotlin.random.Random
 
@@ -25,7 +26,7 @@ class Game{
 
     fun createTestDefenders(){
         defenders = mutableListOf(
-            Defender("Elite",100,90,888),
+            EliteDefender("Elite",100,90,888),
             Defender("D2",100,40,0),
             Defender("D2",100,40,0),
             Defender("D2",100,40,0),
