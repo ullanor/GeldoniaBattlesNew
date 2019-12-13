@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Start Battle of Test Field Great"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Map"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Units"/>
+
+</androidx.appcompat.widget.Toolbar>
