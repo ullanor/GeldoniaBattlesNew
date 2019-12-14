@@ -73,8 +73,8 @@ class MainActivity : AppCompatActivity() {
         ene10.visibility = View.INVISIBLE
 
 
-        defCannon.isVisible = false
-        eneCannon.isVisible = false
+        defCannon.visibility = View.VISIBLE
+        eneCannon.visibility = View.VISIBLE//todo just for testing
         defCloud.visibility = View.INVISIBLE
         eneCloud.visibility = View.INVISIBLE
         //fireButton.isVisible = false
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 
         //fireButton.isVisible = true
         //moveButton.isVisible = true
-        MainGrid.setBackgroundResource(R.drawable.hillytest)
+        MainGrid.setBackgroundResource(R.drawable.mapplain)
 
         game.createEnemies()
         Toast.makeText(this@MainActivity, game.sharedDataClass.battleDifficulty.toString(), Toast.LENGTH_SHORT).show()
