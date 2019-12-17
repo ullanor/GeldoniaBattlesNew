@@ -6,9 +6,9 @@ import com.example.geldonialinebattles.Entities.EliteDefender
 import com.example.geldonialinebattles.Entities.Entity
 import kotlin.random.Random
 
-class Game{
-    val enemyGenerator:EnemyGenerator = EnemyGenerator()
-    var defenders:MutableList<Entity> = mutableListOf()
+class GameBattle{
+    private val enemyGenerator:EnemyGenerator = EnemyGenerator()
+    var defenders:MutableList<Entity> = PlayerData.defenders
     var enemies:MutableList<Entity> = mutableListOf()
 
     var enemiesMoraleBreakPoint:Int = 50
@@ -16,6 +16,7 @@ class Game{
     var sharedDataClass = SharedDataClass('X')
     var shootingTurnEnd:Boolean = false
     var battleStatus:Char = 'X'
+    var battleID:Short = 0
 
     fun createEnemies(){
         enemies = enemyGenerator.createRandomEnemies(0,sharedDataClass)
@@ -24,17 +25,17 @@ class Game{
         defendersMoraleBreakPoint = defenders.count()/2
     }
 
-    fun createTestDefenders(){
-        defenders = mutableListOf(
-            EliteDefender("Elite",100,90,888),
-            Defender("D2",100,40,0),
-            Defender("D2",100,40,0),
-            Defender("D2",100,40,0),
-            Defender("D2",100,40,0),
-            Defender("D2",100,40,0),
-            Defender("testdef5",100,50,0)
-            )
-    }
+    //fun createTestDefenders(){
+    //    defenders = mutableListOf(
+    //        EliteDefender("Elite",100,90,888),
+    //        Defender("D2",100,40,0),
+    //        Defender("D2",100,40,0),
+    //        Defender("D2",100,40,0),
+    //        Defender("D2",100,40,0),
+    //        Defender("D2",100,40,0),
+    //        Defender("testdef5",100,50,0)
+    //        )
+    //}
 
     //player is shooting
     fun playerIsShooting():String{

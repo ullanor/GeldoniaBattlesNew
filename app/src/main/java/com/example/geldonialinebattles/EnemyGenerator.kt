@@ -7,7 +7,7 @@ import com.example.geldonialinebattles.Entities.RedElite
 import com.example.geldonialinebattles.Entities.RedEnemyTest
 import kotlin.random.Random
 
-class EnemyGenerator() {
+class EnemyGenerator {
 
     var redLoc = arrayOf(0,1,2)
     var orcLoc = arrayOf(3,4)
