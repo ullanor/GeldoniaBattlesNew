@@ -229,12 +229,12 @@
     <!-- fire and retreat -->
     <ImageView
         android:id="@+id/defCloud"
-        android:layout_column="2"
-        android:layout_row="1"
         android:layout_width="75dp"
         android:layout_height="300dp"
-        android:layout_gravity="left"
+        android:layout_row="1"
         android:layout_rowSpan="2"
+        android:layout_column="2"
+        android:layout_gravity="left"
         app:srcCompat="@drawable/firingcloud" />
     <ImageView
         android:id="@+id/eneCloud"

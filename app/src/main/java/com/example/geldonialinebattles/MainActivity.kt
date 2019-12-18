@@ -3,17 +3,10 @@ package com.example.geldonialinebattles
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import kotlinx.android.synthetic.main.activity_main.*
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.OnLifecycleEvent
-import com.example.geldonialinebattles.Entities.Defender
-import com.example.geldonialinebattles.Entities.EliteDefender
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,8 +35,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun SetButtons(){
         startBattleButton.setOnClickListener {
-            if(PlayerData.defenders.count() <= 0)
+            if(PlayerData.defenders.count() < 3){
+                Toast.makeText(this@MainActivity,
+                    "You need at least 3 troops to start a battle!",Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
+            }
             moveToStartBattle()
         }
 

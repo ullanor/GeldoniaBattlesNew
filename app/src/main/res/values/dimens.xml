@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="height_less">175dp</dimen>
+    <dimen name="height_normal">250dp</dimen>
+    <dimen name="height_cannon">300dp</dimen>
+</resources>

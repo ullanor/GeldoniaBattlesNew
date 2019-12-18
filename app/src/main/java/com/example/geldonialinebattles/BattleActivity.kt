@@ -1,7 +1,9 @@
 package com.example.geldonialinebattles
 
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.PorterDuffXfermode
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -31,7 +33,7 @@ class BattleActivity : AppCompatActivity() {
         SetButtons()
         HideAllUIElements()
         StartBattle()
-
+        SetCloudSize()
     }
 
     private fun GetEnemiesPictures():Array<ImageView>{
@@ -79,23 +81,34 @@ class BattleActivity : AppCompatActivity() {
         eneCannon.visibility = View.VISIBLE//todo just for testing
         defCloud.visibility = View.INVISIBLE
         eneCloud.visibility = View.INVISIBLE
-        //fireButton.isVisible = false
-        //retreatButton.isVisible = false
     }
-    //normally after start clicked - for testing!
-    private fun StartBattle(){
-        if(battle.defenders.count() < 1){
-            //Toast.makeText(this@MainActivity, "We need more man to fight!", Toast.LENGTH_SHORT).show()
-            //return
-        }
 
-        //fireButton.isVisible = true
-        //moveButton.isVisible = true
+    private fun SetCloudSize(){ //todo cannon extra size
+        val defCount:Int = battle.defenders.count()
+        val eneCount:Int = battle.enemies.count()
+        //Toast.makeText(this@BattleActivity,"$defCount $eneCount",Toast.LENGTH_SHORT).show()
+        if(defCount < 5) {
+            defCloud.layoutParams.height = resources.getDimension(R.dimen.height_less).toInt()
+        }
+        else {
+            defCloud.layoutParams.height = resources.getDimension(R.dimen.height_normal).toInt()
+        }
+        if(eneCount < 5)
+            eneCloud.layoutParams.height = resources.getDimension(R.dimen.height_less).toInt()
+        else eneCloud.layoutParams.height = resources.getDimension(R.dimen.height_normal).toInt()
+
+        Toast.makeText(this@BattleActivity,
+            defCloud.layoutParams.height.toString() + " " + defCount + " "+
+            eneCloud.layoutParams.height.toString() + " " + eneCount,Toast.LENGTH_LONG).show()
+
+    }
+
+
+    //battle preparations! UI and units -------------------------------------------
+    private fun StartBattle(){
         MainGrid.setBackgroundResource(R.drawable.mapplain)
 
         battle.createEnemies()
-        //Toast.makeText(this@BattleActivity, battle.sharedDataClass.battleDifficulty.toString(), Toast.LENGTH_SHORT).show()
-        //battle.createTestDefenders() //testing
         UpdateEntitiesLocalization()
     }
 
@@ -227,7 +240,8 @@ class BattleActivity : AppCompatActivity() {
         timer.start()
     }
 
-    private fun CheckBelligerentsCount():Boolean{ //todo check belligerents morale test!
+    private fun CheckBelligerentsCount():Boolean{
+        //todo check belligerents morale test! + check count -> make cloud size (height)
         return when {
             battle.defenders.count() == 0 -> {
                 battleText.text = "We have lost the battle!"
