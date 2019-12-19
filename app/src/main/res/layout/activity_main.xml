@@ -5,16 +5,16 @@
     android:id="@+id/MainMenu"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/hillybackground"
+    android:background="@drawable/wall"
     android:padding="5dp"
     tools:context=".MainActivity"
     android:gravity="center">
 
     <TableLayout
         android:id="@+id/menuLeft"
-        android:layout_width="135dp"
-        android:layout_height="350dp"
-        android:layout_marginRight="20dp">
+        android:layout_width="150dp"
+        android:layout_height="325dp"
+        android:layout_marginRight="15dp">
 
         <TableRow
             android:id="@+id/playerRow"
@@ -22,20 +22,20 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="50dp"
+                android:layout_width="70dp"
                 android:layout_height="50dp"
-                android:background="@drawable/redfis" />
+                android:background="@drawable/gold_stack"/>
+            <!--goldStack -> https://www.pikpng.com/pngl/m/0-7327_coin-stack-png-stack-of-coins-transparent-png.png -->
 
             <TextView
                 android:id="@+id/playerGold"
-                android:layout_width="85dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@null"
                 android:text="50000"
-                android:textAlignment="center"
                 android:textColor="#FFC107"
-                android:textSize="30sp"
+                android:textSize="30dp"
                 android:textStyle="italic" />
 
         </TableRow>
@@ -44,8 +44,7 @@
     <LinearLayout
         android:id="@+id/Menu"
         android:layout_width="wrap_content"
-        android:layout_height="350dp"
-        android:layout_marginRight="20dp"
+        android:layout_height="325dp"
         android:orientation="vertical">
 
         <Button
@@ -55,10 +54,19 @@
             android:layout_gravity="center"
             android:layout_marginBottom="5dp"
             android:shadowColor="#000000"
-            android:text="Start Battle of Test"
+            android:text="Start Battle"
             android:textColor="#FF0000"
             android:textColorHighlight="#FF9800"
             android:textColorLink="#FFEB3B"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/battleNameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#A31814"
+            android:text="JOWISZ"
+            android:textAlignment="center"
             android:textSize="20dp" />
 
         <Button
@@ -66,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="~ Buy Normal D ~"
+            android:text="test"
             android:textSize="20dp" />
 
         <Button
@@ -75,17 +83,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="~ Map ~"
-            android:textSize="20dp" />
-
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#A31814"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="JOWISZ"
-            android:textAlignment="center"
             android:textSize="20dp" />
 
         <Button
@@ -109,7 +106,8 @@
     <TableLayout
         android:id="@+id/DefenderShop"
         android:layout_width="wrap_content"
-        android:layout_height="350dp">
+        android:layout_height="325dp"
+        android:layout_marginLeft="15dp">
 
         <TableRow
             android:id="@+id/barracksRow"
@@ -118,7 +116,7 @@
 
             <Button
                 android:id="@+id/shopButton"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_span="2"
@@ -130,12 +128,13 @@
         <TableRow
             android:id="@+id/fusRow"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#D3C371">
 
             <ImageButton
                 android:id="@+id/buyFusilierButton"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:background="@null"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/bluefis" />
@@ -144,9 +143,9 @@
                 android:id="@+id/fusText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical"
                 android:text="X0 50g"
-                android:textColor="#FFC107"
+                android:textColor="#000000"
                 android:textSize="18sp" />
 
 
@@ -155,12 +154,13 @@
         <TableRow
             android:id="@+id/greRow"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#D3C371">
 
             <ImageButton
                 android:id="@+id/buyGrenadierButton"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:background="@null"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/bluegren" />
@@ -171,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="X0 300g"
-                android:textColor="#FFC107"
+                android:textColor="#000000"
                 android:textSize="18sp" />
 
 
@@ -180,12 +180,13 @@
         <TableRow
             android:id="@+id/genRow"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#D3C371">
 
             <ImageButton
                 android:id="@+id/buyGeneralButton"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:background="@null"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/bluefis" />
@@ -196,7 +197,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="X0 750g"
-                android:textColor="#FFC107"
+                android:textColor="#000000"
                 android:textSize="18sp" />
 
 
@@ -205,12 +206,13 @@
         <TableRow
             android:id="@+id/canRow"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#D3C371">
 
             <ImageButton
                 android:id="@+id/buyCannonButton"
-                android:layout_width="85dp"
-                android:layout_height="70dp"
+                android:layout_width="75dp"
+                android:layout_height="60dp"
                 android:background="@null"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/bluecannon" />
@@ -221,7 +223,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="X0 1000g"
-                android:textColor="#FFC107"
+                android:textColor="#000000"
                 android:textSize="18sp" />
 
 

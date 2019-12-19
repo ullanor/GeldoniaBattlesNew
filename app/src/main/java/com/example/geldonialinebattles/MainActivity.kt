@@ -9,12 +9,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.map_game.view.*
-import android.R.layout
 import android.content.Context
 import android.content.DialogInterface
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.view.WindowManager
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -38,12 +34,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getAttackLocation(){
-        startBattleButton.text = "Start Battle of " +
-                "${BattleLocation.getByValue(PlayerData.locationToAttack)}"
+        battleNameText.text = "Battle of ${BattleLocation.getByValue(PlayerData.locationToAttack)}"
     }
 
     private fun SetUI(){
-        editText.setText(PlayerData.testString)
+        //battleNameText.setText(PlayerData.testString)
 
         BarracksVisibility(false)
         UpdateUI()
