@@ -43,9 +43,9 @@ class BattleActivity : AppCompatActivity() {
 
 
     private fun GetBattleName(){
-        battle.battleID = (intent.getIntExtra("battleID",0)).toShort()
+        //battle.battleID = (intent.getIntExtra("battleID",0)).toShort()
         Toast.makeText(this@BattleActivity, "Battle of " +
-                battle.battleID.toString(), Toast.LENGTH_SHORT).show()
+                BattleLocation.getByValue(PlayerData.locationToAttack), Toast.LENGTH_SHORT).show()
 
     }
     private fun HideAllUIElements(){
@@ -112,28 +112,27 @@ class BattleActivity : AppCompatActivity() {
         UpdateEntitiesLocalization()
     }
 
+    private fun UpdateEntitiesDeadImage(){
+        for(deadNo in battle.defDeadNo){
+            defendersPictures[deadNo].setImageResource(R.drawable.bluedead)
+        }
+        for(deadNo in battle.eneDeadNo){
+            enemiesPictures[deadNo].setImageResource(R.drawable.reddead)
+        }
+    }
+
     private fun UpdateEntitiesLocalization(){
-        //var test:String = ""
         for(x in 0 until battle.defenders.count()){
-            battle.defenders[x].SelectNewPicture(defendersPictures[x])
-            //test += battle.defenders[x].mybattlePicture.id.toString() + "\n"
+            battle.defenders[x].myGamePictueNo = x
+            defendersPictures[x].setImageResource(battle.defenders[x].EntityImage)
+            defendersPictures[x].visibility = View.VISIBLE
         }
         for(x in 0 until battle.enemies.count()){
-            battle.enemies[x].SelectNewPicture(enemiesPictures[x])
-            //test += battle.defenders[x].mybattlePicture.id.toString() + "\n"
+            battle.enemies[x].myGamePictueNo = x
+            enemiesPictures[x].setImageResource(battle.enemies[x].EntityImage)
+            enemiesPictures[x].visibility = View.VISIBLE
         }
-        //battleText.text = SpannableStringBuilder(test)
-        ShowEntitiesOnBattleField()
     }
-
-    private fun ShowEntitiesOnBattleField(){
-        for(defender in battle.defenders){
-            defender.ShowMeOnField()
-        }
-        for(enemy in battle.enemies)
-            enemy.ShowMeOnField()
-    }
-
 
     // ------------------------------------------ buttons ---------------------------------
     private fun SetButtons(){
@@ -195,10 +194,12 @@ class BattleActivity : AppCompatActivity() {
         if(isPlayer) {
             defCloud.visibility = View.VISIBLE
             battleText.text = battle.playerIsShooting()
+            UpdateEntitiesDeadImage()
         }
         else {
             eneCloud.visibility = View.VISIBLE
             battleText.text = battle.enemyIsShooting()
+            UpdateEntitiesDeadImage()
         }
 
         timer = object: CountDownTimer(2000, 500) {

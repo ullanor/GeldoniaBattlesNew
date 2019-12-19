@@ -16,7 +16,9 @@ class GameBattle{
     var sharedDataClass = SharedDataClass('X')
     var shootingTurnEnd:Boolean = false
     var battleStatus:Char = 'X'
-    var battleID:Short = 0
+    //var battleID:Short = 0
+    var defDeadNo:MutableList<Int> = mutableListOf() //list of dead bodies
+    var eneDeadNo:MutableList<Int> = mutableListOf()
 
     fun createEnemies(){
         enemies = enemyGenerator.createRandomEnemies(0,sharedDataClass)
@@ -50,6 +52,7 @@ class GameBattle{
             hitCounter++
             enemy = enemies[Random.nextInt(enemies.count())]
             if(enemy.AssessDamage()){
+                eneDeadNo.add(enemy.myGamePictueNo)
                 deadCounter++
                 enemies.remove(enemy)
             }
@@ -76,6 +79,7 @@ class GameBattle{
             hitCounter++
             defender = defenders[Random.nextInt(defenders.count())]
             if(defender.AssessDamage()){
+                defDeadNo.add(defender.myGamePictueNo)
                 deadCounter++
                 defenders.remove(defender)
             }

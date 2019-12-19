@@ -3,10 +3,24 @@ package com.example.geldonialinebattles
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.View
 import android.widget.Toast
-
+import androidx.appcompat.app.AlertDialog
+import kotlinx.android.synthetic.main.map_game.view.*
+import android.R.layout
+import android.content.Context
+import android.content.DialogInterface
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.view.WindowManager
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
+import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,9 +31,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        getAttackLocation()
         SetButtons()
         SetUI()
         Toast.makeText(this@MainActivity,PlayerData.defenders.count().toString(),Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getAttackLocation(){
+        startBattleButton.text = "Start Battle of " +
+                "${BattleLocation.getByValue(PlayerData.locationToAttack)}"
     }
 
     private fun SetUI(){
@@ -30,9 +50,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun UpdateUI(){
-        mapButton.text = PlayerData.gold.toString()
+        playerGold.text = PlayerData.gold.toString()
     }
 
+    // buttons -------------------------------------------------------------------------------
     private fun SetButtons(){
         startBattleButton.setOnClickListener {
             if(PlayerData.defenders.count() < 3){
@@ -43,11 +64,43 @@ class MainActivity : AppCompatActivity() {
             moveToStartBattle()
         }
 
-        Test.setOnClickListener{
-            gameMain.createTestDefenders()
-            PlayerData.testString = "changed!"
+        //map button -----------------------------------------------
+        mapButton.setOnClickListener{
+            //gameMain.createTestDefenders()
+            moveToMap()
         }
 
+        Test.setOnClickListener{//todo for defenders stats etc.
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.map_game,null)
+            val mBuilder = AlertDialog.Builder(this)
+                .setView(mDialogView)
+                //.setTitle("Map Form")
+            val mAlertDialog = mBuilder.create()
+            mAlertDialog.show()
+            val layoutParams = WindowManager.LayoutParams()
+            layoutParams.copyFrom(mAlertDialog.window?.attributes)
+            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
+            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+            mAlertDialog.window?.attributes = layoutParams
+
+            mDialogView.location1.setOnClickListener{
+                mAlertDialog.dismiss()
+                Toast.makeText(this@MainActivity,"WORKING!",Toast.LENGTH_SHORT).show()
+            }
+            mDialogView.location2.setOnClickListener{
+                mAlertDialog.dismiss()
+            }
+        }
+
+        SaveButton.setOnClickListener{
+            serializeTest()
+        }
+
+        LoadButton.setOnClickListener{
+            deserializeTest()
+            UpdateUI()
+            getAttackLocation()
+        }
 
         //shop buttons ---------------------------------------------
         shopButton.setOnClickListener{
@@ -107,8 +160,81 @@ class MainActivity : AppCompatActivity() {
 
     private fun moveToStartBattle(){
         val intent = Intent(this,BattleActivity::class.java)
-        intent.putExtra("battleID",4)
+        //intent.putExtra("battleID",4)
         startActivity(intent)
     }
+
+    //show map (change activity to map)
+
+    private fun moveToMap(){
+        val intent = Intent(this,MapActivity::class.java)
+        startActivity(intent)
+    }
+
+    // alert dialog test message --------------------------------------------------------
+    private fun alertDialogInfo(message:String){
+        lateinit var dialog:AlertDialog
+        val mBuilder = AlertDialog.Builder(this)
+              .setTitle("Load Info")
+              .setMessage(message)
+
+        val dialogClickListener = DialogInterface.OnClickListener{ _, which ->
+            when(which){
+                DialogInterface.BUTTON_POSITIVE ->
+                    Toast.makeText(this@MainActivity,"Positive/Yes button clicked.",
+                        Toast.LENGTH_SHORT).show()
+            }
+        }
+        // Set the alert dialog positive/yes button
+        mBuilder.setPositiveButton("YES",dialogClickListener)
+        dialog = mBuilder.create()
+        dialog.show()
+    }
+
+    //serializations ~ SAVING AND LOADING GAME~ -----------------------------------------
+    fun serializeTest() {
+        val file = "geldonia.ser"
+        val toSaveData = GeldoniaSaveData(PlayerData.gold,PlayerData.defenders,
+            PlayerData.locationToAttack)
+
+        var fos: FileOutputStream? = null
+        fos = openFileOutput(file, Context.MODE_PRIVATE)
+        try {
+            ObjectOutputStream(fos).use { it.writeObject(toSaveData) }
+            Toast.makeText(
+                this@MainActivity,
+                "Saving file to $filesDir/$file",
+                Toast.LENGTH_LONG
+            ).show()
+        } catch (e: Exception) {
+            Toast.makeText(this@MainActivity, e.toString(), Toast.LENGTH_LONG).show()
+        }
+        fos?.close()
+    }
+
+    fun deserializeTest(){
+        val file = "geldonia.ser"
+        var fis: FileInputStream
+
+        fis = openFileInput(file)
+
+        ObjectInputStream(fis).use { it ->
+            val toLoadData = it.readObject()
+
+            when (toLoadData){
+                is GeldoniaSaveData -> {
+                    //Toast.makeText(this@MainActivity, toLoadData.toString(), Toast.LENGTH_SHORT).show()
+                    alertDialogInfo(toLoadData.toString())
+
+                    PlayerData.gold = toLoadData.gold
+                    PlayerData.defenders = toLoadData.defenders
+                    PlayerData.locationToAttack = toLoadData.locationToAttack
+                }
+                else -> Toast.makeText(this@MainActivity, "Failed to restore", Toast.LENGTH_SHORT).show()
+            }
+        }
+        fis?.close()
+    }
+
 }
 

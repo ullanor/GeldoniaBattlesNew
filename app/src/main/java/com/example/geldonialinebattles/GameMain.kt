@@ -34,13 +34,13 @@ class GameMain {
     //defender shop operations -----------------------------------------
     fun buyFusilier(){
         PlayerData.defenders.add(
-            Defender("Grenadier",100,90,888))
+            Defender("Fusilier",100,10,888))
         PlayerData.gold = (PlayerData.gold - 50).toShort()
     }
 
     fun buyGrenadier(){
         PlayerData.defenders.add(
-            EliteDefender("Elite",100,50,0))
+            EliteDefender("Elite",120,90,0))
         PlayerData.gold = (PlayerData.gold - 300).toShort()
     }
 }

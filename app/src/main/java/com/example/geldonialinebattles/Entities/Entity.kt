@@ -1,24 +1,26 @@
 package com.example.geldonialinebattles.Entities
 
-import android.view.View
-import android.widget.ImageView
+//import android.view.View
+//import android.widget.ImageView
 import com.example.geldonialinebattles.R
+import java.io.Serializable
 
 abstract class Entity(val name:String, var health:Int,
-                     val shootingSkill:Int) {
-    var myGamePicture: ImageView? = null
+                     val shootingSkill:Int) : Serializable{
+//      var myGamePicture: ImageView? = null
+    var myGamePictueNo: Int = 0
 
-    fun SelectNewPicture(picture:ImageView){
+/*    fun SelectNewPicture(picture:ImageView){
         myGamePicture = picture
         myGamePicture?.setImageResource(EntityImage)
-    }
-    fun ShowMeOnField(){
+    }*/
+/*    fun ShowMeOnField(){
         myGamePicture?.visibility = View.VISIBLE
-    }
+    }*/
     fun AssessDamage():Boolean{
         health -= 100
         if(health <= 0){
-            myGamePicture?.setImageResource(EntityDeadImage)
+            //myGamePicture?.setImageResource(EntityDeadImage)
             return true
         }
         return false
