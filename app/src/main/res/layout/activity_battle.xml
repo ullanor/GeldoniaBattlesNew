@@ -5,7 +5,7 @@
     android:id="@+id/MainGrid"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/hillybackground"
+    android:background="@drawable/mapplain"
     android:columnCount="7"
     android:padding="5dp"
     android:rowCount="3"
@@ -278,16 +278,28 @@
             android:text="~ Move! ~" />
 
         <TextView
+            android:id="@+id/battleDifficultyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:text="Difficulty"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:paddingHorizontal="5dp"
+            android:layout_gravity="center"/>
+
+        <TextView
             android:id="@+id/battleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#A31814"
-            android:ems="10"
             android:inputType="textMultiLine|textPersonName|textImeMultiLine"
             android:text="The battle has started!"
             android:textAlignment="center"
             android:textColor="#000000"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:paddingHorizontal="5dp"/>
     </LinearLayout>
 
 

@@ -29,11 +29,11 @@ class BattleActivity : AppCompatActivity() {
 
 
         battle = GameBattle()
-        GetBattleName()
         SetButtons()
         HideAllUIElements()
         StartBattle()
         SetCloudSize()
+        GetNameMapAndDiff()
     }
 
     private fun GetEnemiesPictures():Array<ImageView>{
@@ -42,11 +42,10 @@ class BattleActivity : AppCompatActivity() {
         return arrayOf(def1,def2,def3,def4,def5,def6,def7,def8,def9,def10)}
 
 
-    private fun GetBattleName(){
-        //battle.battleID = (intent.getIntExtra("battleID",0)).toShort()
-        Toast.makeText(this@BattleActivity, "Battle of " +
-                BattleLocation.getByValue(PlayerData.locationToAttack), Toast.LENGTH_SHORT).show()
-
+    private fun GetNameMapAndDiff(){
+        val enumNo = BattleLocation.getByValue(PlayerData.locationToAttack)
+        MainGrid.setBackgroundResource(BattleLocationMap.valueOf(enumNo.toString()).mapLoc)
+        battleDifficultyText.text = "Difficulty: ${battle.sharedDataClass.battleDifficulty}"
     }
     private fun HideAllUIElements(){
         def1.visibility = View.INVISIBLE
@@ -106,8 +105,6 @@ class BattleActivity : AppCompatActivity() {
 
     //battle preparations! UI and units -------------------------------------------
     private fun StartBattle(){
-        MainGrid.setBackgroundResource(R.drawable.mapplain)
-
         battle.createEnemies()
         UpdateEntitiesLocalization()
     }
@@ -158,7 +155,8 @@ class BattleActivity : AppCompatActivity() {
                 //battle.battleStatus = 'X' //must reset battle state !
                 //HideAllUIElements()
                 //StartBattle()
-
+                //todo get money from battle based on map difficulty
+                PlayerData.gold = (PlayerData.gold + battle.victoryMoney()).toShort()
                 val intent = Intent(this,MainActivity::class.java)
                 startActivity(intent)
             }

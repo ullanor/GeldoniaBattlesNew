@@ -27,17 +27,14 @@ class GameBattle{
         defendersMoraleBreakPoint = defenders.count()/2
     }
 
-    //fun createTestDefenders(){
-    //    defenders = mutableListOf(
-    //        EliteDefender("Elite",100,90,888),
-    //        Defender("D2",100,40,0),
-    //        Defender("D2",100,40,0),
-    //        Defender("D2",100,40,0),
-    //        Defender("D2",100,40,0),
-    //        Defender("D2",100,40,0),
-    //        Defender("testdef5",100,50,0)
-    //        )
-    //}
+    fun victoryMoney():Short{
+        val diff = sharedDataClass.battleDifficulty
+        if(diff == 'E')
+            return 300
+        else if(diff == 'N')
+            return 1000
+        else return 0
+    }
 
     //player is shooting
     fun playerIsShooting():String{

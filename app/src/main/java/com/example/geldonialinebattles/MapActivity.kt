@@ -24,6 +24,16 @@ class MapActivity : AppCompatActivity() {
             PlayerData.locationToAttack = 2
             quitMap()
         }
+
+        location3.setOnClickListener{
+            PlayerData.locationToAttack = 3
+            quitMap()
+        }
+
+        location4.setOnClickListener{
+            PlayerData.locationToAttack = 4
+            quitMap()
+        }
     }
 
     //return to main menu

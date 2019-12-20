@@ -56,6 +56,11 @@ class MainActivity : AppCompatActivity() {
                     "You need at least 3 troops to start a battle!",Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            if(PlayerData.locationToAttack == 0.toShort()){
+                Toast.makeText(this@MainActivity,
+                    "Choose attack location!",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             moveToStartBattle()
         }
 
