@@ -1,5 +1,6 @@
 package com.example.geldonialinebattles
 
+import com.example.geldonialinebattles.Entities.Cannon
 import com.example.geldonialinebattles.Entities.Defender
 import com.example.geldonialinebattles.Entities.EliteDefender
 
@@ -42,5 +43,16 @@ class GameMain {
         PlayerData.defenders.add(
             EliteDefender("Elite",120,90,0))
         PlayerData.gold = (PlayerData.gold - 300).toShort()
+    }
+
+    fun buyCannon(){
+        PlayerData.defCannon = Cannon("howitzer",100,80)
+        PlayerData.gold = (PlayerData.gold - 1000).toShort()
+    }
+
+    fun cannonStatus():String{
+        return if(PlayerData.defCannon == null)
+            "X"+ 0 + " 1000g"
+        else "X"+ 1 + " 1000g"
     }
 }

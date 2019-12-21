@@ -12,10 +12,7 @@ import kotlinx.android.synthetic.main.map_game.view.*
 import android.content.Context
 import android.content.DialogInterface
 import android.view.WindowManager
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.ObjectInputStream
-import java.io.ObjectOutputStream
+import java.io.*
 import java.lang.Exception
 
 
@@ -91,12 +88,16 @@ class MainActivity : AppCompatActivity() {
                 mAlertDialog.dismiss()
             }
         }
-
+        // save and load buttons -------------------------------
         SaveButton.setOnClickListener{
             serializeTest()
         }
 
         LoadButton.setOnClickListener{
+            if(!File("$filesDir/geldonia.ser").exists()){
+                ToastMe("No saved data found!")
+                return@setOnClickListener
+            }
             deserializeTest()
             UpdateUI()
             getAttackLocation()
@@ -132,6 +133,20 @@ class MainActivity : AppCompatActivity() {
             UpdateUI()
             CountDefendersByType()
         }
+
+        buyGeneralButton.setOnClickListener{
+
+        }
+
+        buyCannonButton.setOnClickListener{
+            if(PlayerData.gold < 1000.toShort()|| PlayerData.defCannon != null){
+                Toast.makeText(this@MainActivity,"Not enough gold or cannon is already in army!",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            gameMain.buyCannon()
+            UpdateUI()
+            CountDefendersByType()
+        }
     }
 
     private fun CountDefendersByType(){
@@ -143,10 +158,12 @@ class MainActivity : AppCompatActivity() {
         if(isVisible) {
             fusRow.visibility = View.VISIBLE
             greRow.visibility = View.VISIBLE
-            //genRow.visibility = View.VISIBLE
-            //canRow.visibility = View.VISIBLE
+            genRow.visibility = View.VISIBLE
+            canRow.visibility = View.VISIBLE
             fusText.text = "X"+ gameMain.fusiliersCount + " 50g"
             greText.text = "X"+ gameMain.grenadiersCount + " 300g"
+            genText.text = "X"+0//todo general things
+            canText.text = gameMain.cannonStatus()
         }
         else{
             fusRow.visibility = View.INVISIBLE
@@ -195,7 +212,7 @@ class MainActivity : AppCompatActivity() {
     fun serializeTest() {
         val file = "geldonia.ser"
         val toSaveData = GeldoniaSaveData(PlayerData.gold,PlayerData.defenders,
-            PlayerData.locationToAttack)
+            PlayerData.locationToAttack,PlayerData.defCannon)
 
         var fos: FileOutputStream? = null
         fos = openFileOutput(file, Context.MODE_PRIVATE)
@@ -229,6 +246,7 @@ class MainActivity : AppCompatActivity() {
                     PlayerData.gold = toLoadData.gold
                     PlayerData.defenders = toLoadData.defenders
                     PlayerData.locationToAttack = toLoadData.locationToAttack
+                    PlayerData.defCannon = toLoadData.defCannon
                 }
                 else -> Toast.makeText(this@MainActivity, "Failed to restore", Toast.LENGTH_SHORT).show()
             }
@@ -236,5 +254,9 @@ class MainActivity : AppCompatActivity() {
         fis?.close()
     }
 
+    //toast func---------------------------------------------
+    private fun ToastMe(value:String){
+        Toast.makeText(this@MainActivity,value,Toast.LENGTH_SHORT).show()
+    }
 }
 

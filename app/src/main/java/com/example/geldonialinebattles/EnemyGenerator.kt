@@ -19,6 +19,7 @@ class EnemyGenerator {
             redEasy()
         } else {
             battleData.battleDifficulty = 'N'
+            battleData.enemyHasCannon = true
             redNormal()
         }
     }

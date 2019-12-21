@@ -19,7 +19,7 @@ import android.content.res.Configuration.SCREENLAYOUT_SIZE_MASK
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class BattleActivity : AppCompatActivity() {
@@ -83,8 +83,10 @@ class BattleActivity : AppCompatActivity() {
         ene10.visibility = View.INVISIBLE
 
 
-        defCannon.visibility = View.VISIBLE
-        eneCannon.visibility = View.VISIBLE//todo just for testing
+        defCannon.visibility = View.INVISIBLE
+        if(PlayerData.defCannon == null)
+            cannonButton.visibility = View.INVISIBLE
+        eneCannon.visibility = View.INVISIBLE//todo just for testing
         defCloud.visibility = View.INVISIBLE
         eneCloud.visibility = View.INVISIBLE
     }
@@ -95,18 +97,37 @@ class BattleActivity : AppCompatActivity() {
 
         val defCount:Int = battle.defenders.count()
         val eneCount:Int = battle.enemies.count()
-        //Toast.makeText(this@BattleActivity,"$defCount $eneCount",Toast.LENGTH_SHORT).show()
-        if(defCount < 5) {
+
+        //defenders --------------------------------------------------------------
+        if(PlayerData.defCannon != null){
             if(isTabletDev)
-                defCloud.layoutParams.height = resources.getDimension(R.dimen.height_Tless).toInt()
-            else
-                defCloud.layoutParams.height = resources.getDimension(R.dimen.height_less).toInt()
+                defCloud.layoutParams.height = resources.getDimension(R.dimen.height_Tcannon).toInt()
+            else defCloud.layoutParams.height = resources.getDimension(R.dimen.height_cannon).toInt()
+        }else {
+            if (defCount < 5) {
+                if (isTabletDev)
+                    defCloud.layoutParams.height =
+                        resources.getDimension(R.dimen.height_Tless).toInt()
+                else
+                    defCloud.layoutParams.height =
+                        resources.getDimension(R.dimen.height_less).toInt()
+            } else {
+                if (isTabletDev)
+                    defCloud.layoutParams.height =
+                        resources.getDimension(R.dimen.height_Tnormal).toInt()
+                else
+                    defCloud.layoutParams.height =
+                        resources.getDimension(R.dimen.height_normal).toInt()
+            }
         }
-        else {
+
+        //enemies -----------------------------------------------------
+        if(battle.sharedDataClass.enemyHasCannon){
             if(isTabletDev)
-                defCloud.layoutParams.height = resources.getDimension(R.dimen.height_Tnormal).toInt()
+                eneCloud.layoutParams.height = resources.getDimension(R.dimen.height_Tcannon).toInt()
             else
-                defCloud.layoutParams.height = resources.getDimension(R.dimen.height_normal).toInt()
+                eneCloud.layoutParams.height = resources.getDimension(R.dimen.height_cannon).toInt()
+            return
         }
 
         if(eneCount < 5) {
@@ -121,17 +142,13 @@ class BattleActivity : AppCompatActivity() {
             else
                 eneCloud.layoutParams.height = resources.getDimension(R.dimen.height_normal).toInt()
         }
-
-/*        Toast.makeText(this@BattleActivity,
-            defCloud.layoutParams.height.toString() + " " + defCount + " "+
-            eneCloud.layoutParams.height.toString() + " " + eneCount,Toast.LENGTH_LONG).show()*/
-
     }
 
 
     //battle preparations! UI and units -------------------------------------------
     private fun StartBattle(){
         battle.createEnemies()
+        battle.createEnemyCannon()
         UpdateEntitiesLocalization()
     }
 
@@ -142,9 +159,22 @@ class BattleActivity : AppCompatActivity() {
         for(deadNo in battle.eneDeadNo){
             enemiesPictures[deadNo].setImageResource(R.drawable.reddead)
         }
+        if(PlayerData.defCannon == null)
+            defCannon.setImageResource(R.drawable.bluecannon_destroy)
+        if(battle.enemyCannon == null)
+            eneCannon.setImageResource(R.drawable.enemycannon_destroy)
     }
 
     private fun UpdateEntitiesLocalization(){
+        if(PlayerData.defCannon != null) {
+            defCannon.setImageResource(R.drawable.bluecannon)
+            defCannon.visibility = View.VISIBLE
+        }
+        if(battle.sharedDataClass.enemyHasCannon) {
+            eneCannon.setImageResource(R.drawable.redcannon)
+            eneCannon.visibility = View.VISIBLE
+        }
+
         for(x in 0 until battle.defenders.count()){
             battle.defenders[x].myGamePictueNo = x
             defendersPictures[x].setImageResource(battle.defenders[x].EntityImage)
@@ -159,6 +189,17 @@ class BattleActivity : AppCompatActivity() {
 
     // ------------------------------------------ buttons ---------------------------------
     private fun SetButtons(){
+        cannonButton.setOnClickListener{
+            if(battle.defCannonPosition == 0){
+                battle.defCannonPosition = 1
+                defCannon.rotation = -15f
+            }else if(battle.defCannonPosition == 1){
+                battle.defCannonPosition = 2
+                defCannon.rotation = -25f
+            }else{battle.defCannonPosition = 0
+            defCannon.rotation = 0f}
+        }
+
         fireButton.setOnClickListener{
             //Toast.makeText(this@MainActivity, Random.nextInt(0, 4).toString(), Toast.LENGTH_SHORT).show()
             try {
@@ -182,7 +223,8 @@ class BattleActivity : AppCompatActivity() {
                 //HideAllUIElements()
                 //StartBattle()
                 //todo get money from battle based on map difficulty
-                PlayerData.gold = (PlayerData.gold + battle.victoryMoney()).toShort()
+                if(battle.battleStatus == 'V')
+                    PlayerData.gold = (PlayerData.gold + battle.victoryMoney()).toShort()
                 val intent = Intent(this,MainActivity::class.java)
                 startActivity(intent)
             }
@@ -288,9 +330,12 @@ class BattleActivity : AppCompatActivity() {
         if(isVisible){
             fireButton.visibility = View.VISIBLE
             moveButton.visibility =View.VISIBLE
+            if(PlayerData.defCannon != null)
+                cannonButton.visibility = View.VISIBLE
         }else{
             fireButton.visibility = View.INVISIBLE
             moveButton.visibility =View.INVISIBLE
+            cannonButton.visibility = View.INVISIBLE
         }
     }
 
