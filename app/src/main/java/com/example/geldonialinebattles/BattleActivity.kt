@@ -3,6 +3,7 @@ package com.example.geldonialinebattles
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.PorterDuffXfermode
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,13 @@ import android.widget.Toast
 import com.example.geldonialinebattles.Entities.Defender
 import kotlinx.android.synthetic.main.activity_battle.*
 import java.lang.Exception
+import android.content.res.Configuration.SCREENLAYOUT_SIZE_LARGE
+import android.content.res.Configuration.SCREENLAYOUT_SIZE_MASK
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 class BattleActivity : AppCompatActivity() {
     lateinit var battle:GameBattle
@@ -26,7 +34,6 @@ class BattleActivity : AppCompatActivity() {
 
         enemiesPictures = GetEnemiesPictures()
         defendersPictures = GetDefendersPictures()
-
 
         battle = GameBattle()
         SetButtons()
@@ -83,22 +90,41 @@ class BattleActivity : AppCompatActivity() {
     }
 
     private fun SetCloudSize(){ //todo cannon extra size
+        val isTabletDev = isTablet(this)
+        Toast.makeText(this@BattleActivity,isTabletDev.toString(),Toast.LENGTH_SHORT).show()
+
         val defCount:Int = battle.defenders.count()
         val eneCount:Int = battle.enemies.count()
         //Toast.makeText(this@BattleActivity,"$defCount $eneCount",Toast.LENGTH_SHORT).show()
         if(defCount < 5) {
-            defCloud.layoutParams.height = resources.getDimension(R.dimen.height_less).toInt()
+            if(isTabletDev)
+                defCloud.layoutParams.height = resources.getDimension(R.dimen.height_Tless).toInt()
+            else
+                defCloud.layoutParams.height = resources.getDimension(R.dimen.height_less).toInt()
         }
         else {
-            defCloud.layoutParams.height = resources.getDimension(R.dimen.height_normal).toInt()
+            if(isTabletDev)
+                defCloud.layoutParams.height = resources.getDimension(R.dimen.height_Tnormal).toInt()
+            else
+                defCloud.layoutParams.height = resources.getDimension(R.dimen.height_normal).toInt()
         }
-        if(eneCount < 5)
-            eneCloud.layoutParams.height = resources.getDimension(R.dimen.height_less).toInt()
-        else eneCloud.layoutParams.height = resources.getDimension(R.dimen.height_normal).toInt()
 
-        Toast.makeText(this@BattleActivity,
+        if(eneCount < 5) {
+            if(isTabletDev)
+                eneCloud.layoutParams.height = resources.getDimension(R.dimen.height_Tless).toInt()
+            else
+                eneCloud.layoutParams.height = resources.getDimension(R.dimen.height_less).toInt()
+        }
+        else {
+            if(isTabletDev)
+                eneCloud.layoutParams.height = resources.getDimension(R.dimen.height_Tnormal).toInt()
+            else
+                eneCloud.layoutParams.height = resources.getDimension(R.dimen.height_normal).toInt()
+        }
+
+/*        Toast.makeText(this@BattleActivity,
             defCloud.layoutParams.height.toString() + " " + defCount + " "+
-            eneCloud.layoutParams.height.toString() + " " + eneCount,Toast.LENGTH_LONG).show()
+            eneCloud.layoutParams.height.toString() + " " + eneCount,Toast.LENGTH_LONG).show()*/
 
     }
 
@@ -266,5 +292,11 @@ class BattleActivity : AppCompatActivity() {
             fireButton.visibility = View.INVISIBLE
             moveButton.visibility =View.INVISIBLE
         }
+    }
+
+    // check if tablet test
+    private fun isTablet(context: Context): Boolean {
+        return context.resources.configuration.screenLayout and
+                Configuration.SCREENLAYOUT_SIZE_MASK >= Configuration.SCREENLAYOUT_SIZE_LARGE
     }
 }

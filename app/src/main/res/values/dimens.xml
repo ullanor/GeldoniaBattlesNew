@@ -3,4 +3,8 @@
     <dimen name="height_less">175dp</dimen>
     <dimen name="height_normal">250dp</dimen>
     <dimen name="height_cannon">300dp</dimen>
+
+    <dimen name="height_Tless">300dp</dimen>
+    <dimen name="height_Tnormal">400dp</dimen>
+    <dimen name="height_Tcannon">480dp</dimen>
 </resources>
