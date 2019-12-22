@@ -29,8 +29,10 @@ class MainActivity : AppCompatActivity() {
         SetButtons()
         SetUI()
 
+        var test = ""
+        for(dupa in PlayerData.playerLocations)test += " " + dupa
         Toast.makeText(this@MainActivity,
-            "Conquered Territories: "+PlayerData.playerLocations.count().toString(),Toast.LENGTH_SHORT).show()
+            "Conquered Territories: "+test,Toast.LENGTH_SHORT).show()//todo to remove its spam!
     }
 
     private fun getAttackLocation(){

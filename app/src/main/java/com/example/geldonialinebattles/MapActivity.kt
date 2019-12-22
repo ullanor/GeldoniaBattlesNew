@@ -34,8 +34,8 @@ class MapActivity : AppCompatActivity() {
         val rand = Random.nextInt(0,3)
         if(rand == 0 && PlayerData.playerLocations.count() >= 0){
             val toRem:Short = Random.nextInt(PlayerData.playerLocations.count()).toShort()
-            PlayerData.playerLocations.remove(toRem)
-            PlayerData.locationToAttack = toRem
+            PlayerData.locationToAttack = PlayerData.playerLocations[toRem.toInt()]
+            PlayerData.playerLocations.removeAt(toRem.toInt())
             PlayerData.playerLocIsAttacked = true
         }else{
             PlayerData.playerLocIsAttacked = false
