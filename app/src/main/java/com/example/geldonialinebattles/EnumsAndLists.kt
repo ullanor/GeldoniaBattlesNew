@@ -1,13 +1,15 @@
 package com.example.geldonialinebattles
 
-data class SharedDataClass(var battleDifficulty:Char,var enemyHasCannon:Boolean)
+data class SharedDataClass(var battleDifficulty:Char,var enemyHasCannon:Boolean,
+                           var enemyFightToTheEnd:Boolean)
 
 enum class BattleLocation(val location:Short){
-    none(0),
-    blueCity(1),
-    plain(2),
-    lake(3),
-    redCity(4);
+    none(66),
+    blueCity(0),
+    plain(1),
+    lake(2),
+    redCity(3),
+    desert(4);
 
     companion object {
         private val values = values()
@@ -20,5 +22,6 @@ enum class BattleLocationMap(val mapLoc:Int){
     blueCity(R.drawable.cityblue),
     plain(R.drawable.mapplain),
     lake(R.drawable.maplake),
-    redCity(R.drawable.cityred);
+    redCity(R.drawable.cityred),
+    desert(R.drawable.mapdesert);
 }

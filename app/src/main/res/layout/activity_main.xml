@@ -189,7 +189,7 @@
                 android:layout_height="60dp"
                 android:background="@null"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/bluefis" />
+                app:srcCompat="@drawable/bluegeneral" />
 
             <TextView
                 android:id="@+id/genText"

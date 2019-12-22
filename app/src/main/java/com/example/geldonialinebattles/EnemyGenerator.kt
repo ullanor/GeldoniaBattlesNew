@@ -9,18 +9,24 @@ import kotlin.random.Random
 
 class EnemyGenerator {
 
-    var redLoc = arrayOf(0,1,2)
-    var orcLoc = arrayOf(3,4)
+    var redLoc:ShortArray = shortArrayOf(0,1,2,3,8,9)
+    var orcLoc:ShortArray = shortArrayOf(4,5,6,7)
+    var demonLoc:ShortArray = shortArrayOf(10,11)//todo difficulty based loc etc.
 
     fun createRandomEnemies(targetLocation:Int,battleData:SharedDataClass):MutableList<Entity> {
-        val randomNo = Random.nextInt(0, 4)
-        return if(randomNo < 2) {
+        val randomNo = Random.nextInt(0, 3)
+        if(randomNo == 0){
             battleData.battleDifficulty = 'E'
-            redEasy()
-        } else {
+            battleData.enemyFightToTheEnd = true
+            return redEasy()
+        } else if(randomNo == 1){
+            battleData.battleDifficulty = 'E'
+            return redEasy()
+        }
+        else {
             battleData.battleDifficulty = 'N'
             battleData.enemyHasCannon = true
-            redNormal()
+            return redNormal()
         }
     }
 

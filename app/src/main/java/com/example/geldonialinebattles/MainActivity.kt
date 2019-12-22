@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.map_game.view.*
 import android.content.Context
 import android.content.DialogInterface
 import android.view.WindowManager
+import com.example.geldonialinebattles.Entities.GeneralDefender
 import java.io.*
 import java.lang.Exception
 
@@ -27,10 +28,32 @@ class MainActivity : AppCompatActivity() {
         getAttackLocation()
         SetButtons()
         SetUI()
-        Toast.makeText(this@MainActivity,PlayerData.defenders.count().toString(),Toast.LENGTH_SHORT).show()
+
+        Toast.makeText(this@MainActivity,
+            "Conquered Territories: "+PlayerData.playerLocations.count().toString(),Toast.LENGTH_SHORT).show()
     }
 
     private fun getAttackLocation(){
+        mapButton.visibility = View.VISIBLE
+        SaveButton.visibility = View.VISIBLE
+        if(PlayerData.playerLocations.count() == 5){//todo VICTORY! test with 5 locations
+            battleNameText.text = "FULL VICTORY!"
+            MainMenu.setBackgroundResource(R.drawable.victorywall)
+            mapButton.visibility = View.INVISIBLE
+            return
+        }
+        if(PlayerData.playerLocations.count() == 0 && !PlayerData.playerLocIsAttacked){//todo GAMEOVER
+            battleNameText.text = "GAME OVER!"
+            mapButton.visibility = View.INVISIBLE
+            SaveButton.visibility = View.INVISIBLE
+            return
+        }
+        if(PlayerData.playerLocIsAttacked){
+            battleNameText.text = "Defend ${BattleLocation.getByValue(PlayerData.locationToAttack)}"
+            mapButton.visibility = View.INVISIBLE
+            SaveButton.visibility = View.INVISIBLE
+            return
+        }
         battleNameText.text = "Battle of ${BattleLocation.getByValue(PlayerData.locationToAttack)}"
     }
 
@@ -53,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                     "You need at least 3 troops to start a battle!",Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if(PlayerData.locationToAttack == 0.toShort()){
+            if(PlayerData.locationToAttack == 66.toShort()){
                 Toast.makeText(this@MainActivity,
                     "Choose attack location!",Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -67,7 +90,15 @@ class MainActivity : AppCompatActivity() {
             moveToMap()
         }
 
-        Test.setOnClickListener{//todo for defenders stats etc.
+        Test.setOnClickListener{//todo for defenders stats etc. and general spec skills
+            //todo SKILLS isAlwaysShootingFirst and FightToTheEnd
+            for(def in PlayerData.defenders)if(def is GeneralDefender){
+                def.AlwaysShootingFirst = true
+                ToastMe(def.AlwaysShootingFirst.toString())
+                break
+            }
+
+
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.map_game,null)
             val mBuilder = AlertDialog.Builder(this)
                 .setView(mDialogView)
@@ -99,8 +130,11 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             deserializeTest()
+            PlayerData.playerLocIsAttacked = false
             UpdateUI()
             getAttackLocation()
+            isBarracksVisible = false
+            BarracksVisibility(false)
         }
 
         //shop buttons ---------------------------------------------
@@ -135,7 +169,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         buyGeneralButton.setOnClickListener{
-
+            if(PlayerData.gold < 750.toShort() || gameMain.generalCount != 0.toShort()){
+                Toast.makeText(this@MainActivity,"Not enough gold or too many defenders!",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            gameMain.buyGeneral()
+            UpdateUI()
+            CountDefendersByType()
         }
 
         buyCannonButton.setOnClickListener{
@@ -162,7 +202,7 @@ class MainActivity : AppCompatActivity() {
             canRow.visibility = View.VISIBLE
             fusText.text = "X"+ gameMain.fusiliersCount + " 50g"
             greText.text = "X"+ gameMain.grenadiersCount + " 300g"
-            genText.text = "X"+0//todo general things
+            genText.text = "X"+ gameMain.generalCount + " 750g"
             canText.text = gameMain.cannonStatus()
         }
         else{
@@ -197,9 +237,9 @@ class MainActivity : AppCompatActivity() {
 
         val dialogClickListener = DialogInterface.OnClickListener{ _, which ->
             when(which){
-                DialogInterface.BUTTON_POSITIVE ->
+/*                DialogInterface.BUTTON_POSITIVE ->
                     Toast.makeText(this@MainActivity,"Positive/Yes button clicked.",
-                        Toast.LENGTH_SHORT).show()
+                        Toast.LENGTH_SHORT).show()*/
             }
         }
         // Set the alert dialog positive/yes button
@@ -212,7 +252,7 @@ class MainActivity : AppCompatActivity() {
     fun serializeTest() {
         val file = "geldonia.ser"
         val toSaveData = GeldoniaSaveData(PlayerData.gold,PlayerData.defenders,
-            PlayerData.locationToAttack,PlayerData.defCannon)
+            PlayerData.locationToAttack,PlayerData.defCannon,PlayerData.playerLocations)
 
         var fos: FileOutputStream? = null
         fos = openFileOutput(file, Context.MODE_PRIVATE)
@@ -247,6 +287,7 @@ class MainActivity : AppCompatActivity() {
                     PlayerData.defenders = toLoadData.defenders
                     PlayerData.locationToAttack = toLoadData.locationToAttack
                     PlayerData.defCannon = toLoadData.defCannon
+                    PlayerData.playerLocations = toLoadData.playerLocations
                 }
                 else -> Toast.makeText(this@MainActivity, "Failed to restore", Toast.LENGTH_SHORT).show()
             }

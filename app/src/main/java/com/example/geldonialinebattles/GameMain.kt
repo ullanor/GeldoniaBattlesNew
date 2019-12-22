@@ -3,19 +3,24 @@ package com.example.geldonialinebattles
 import com.example.geldonialinebattles.Entities.Cannon
 import com.example.geldonialinebattles.Entities.Defender
 import com.example.geldonialinebattles.Entities.EliteDefender
+import com.example.geldonialinebattles.Entities.GeneralDefender
 
 class GameMain {
 
     var fusiliersCount:Short = 0
     var grenadiersCount:Short = 0
+    var generalCount:Short = 0
 
     fun countDefendersByType(){
         fusiliersCount = 0
         grenadiersCount = 0
+        generalCount = 0
         for(defender in PlayerData.defenders){
-            if(defender is EliteDefender)
-                grenadiersCount++
-            else fusiliersCount++
+            when (defender) {
+                is EliteDefender -> grenadiersCount++
+                is GeneralDefender -> generalCount++
+                else -> fusiliersCount++
+            }
         }
     }
 
@@ -43,6 +48,16 @@ class GameMain {
         PlayerData.defenders.add(
             EliteDefender("Elite",120,90,0))
         PlayerData.gold = (PlayerData.gold - 300).toShort()
+    }
+
+    fun buyGeneral(){
+        if(PlayerData.defenders.count() != 0) {
+            val tempDef = PlayerData.defenders[0]
+            PlayerData.defenders[0] = GeneralDefender("General", 100, 100, 0, 0)
+            PlayerData.defenders.add(tempDef)
+        }else
+            PlayerData.defenders.add(GeneralDefender("General", 100, 100, 0, 0))
+        PlayerData.gold = (PlayerData.gold - 750).toShort()
     }
 
     fun buyCannon(){

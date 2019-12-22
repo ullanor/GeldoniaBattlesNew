@@ -19,7 +19,9 @@ import android.content.res.Configuration.SCREENLAYOUT_SIZE_MASK
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.example.geldonialinebattles.Entities.GeneralDefender
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.random.Random
 
 
 class BattleActivity : AppCompatActivity() {
@@ -91,10 +93,16 @@ class BattleActivity : AppCompatActivity() {
         eneCloud.visibility = View.INVISIBLE
     }
 
-    private fun SetCloudSize(){ //todo cannon extra size
+    private fun SetCloudSize(){ //todo cannon extra size and player to the end ;)
         val isTabletDev = isTablet(this)
-        Toast.makeText(this@BattleActivity,isTabletDev.toString(),Toast.LENGTH_SHORT).show()
-
+        //Toast.makeText(this@BattleActivity,isTabletDev.toString(),Toast.LENGTH_SHORT).show()
+        //-----------------------------------------------------------------------------------+++
+        var test = false
+        for(def in PlayerData.defenders)if(def is GeneralDefender)test = def.AlwaysShootingFirst
+        Toast.makeText(this@BattleActivity,
+            "E: "+battle.sharedDataClass.enemyFightToTheEnd+" Palw: "+
+            test,Toast.LENGTH_SHORT).show()
+        //-----------------------------------------------------------------------------------+++
         val defCount:Int = battle.defenders.count()
         val eneCount:Int = battle.enemies.count()
 
@@ -147,6 +155,7 @@ class BattleActivity : AppCompatActivity() {
 
     //battle preparations! UI and units -------------------------------------------
     private fun StartBattle(){
+        battle.setIsAlwaysShootFirst()
         battle.createEnemies()
         battle.createEnemyCannon()
         UpdateEntitiesLocalization()
@@ -205,7 +214,7 @@ class BattleActivity : AppCompatActivity() {
             try {
                 //battle.shootingTurnEnd = false //must reset that state !
                 if(CheckBattleIsActiveStatus())
-                    PerformShooting()
+                    PerformShooting(Random.nextInt(0,2))
                 else{
                     Toast.makeText(this@BattleActivity, "THE END", Toast.LENGTH_SHORT).show()
                 }
@@ -223,8 +232,12 @@ class BattleActivity : AppCompatActivity() {
                 //HideAllUIElements()
                 //StartBattle()
                 //todo get money from battle based on map difficulty
-                if(battle.battleStatus == 'V')
+                if(battle.battleStatus == 'V') {
+                    PlayerData.playerLocations.add(PlayerData.locationToAttack)
                     PlayerData.gold = (PlayerData.gold + battle.victoryMoney()).toShort()
+                }
+                PlayerData.locationToAttack = 66
+                PlayerData.playerLocIsAttacked = false
                 val intent = Intent(this,MainActivity::class.java)
                 startActivity(intent)
             }
@@ -242,13 +255,13 @@ class BattleActivity : AppCompatActivity() {
     }
 
     // --------------------------------------------- shoooting --------------------------
-    private fun PerformShooting(){
-        //battleText.text = battle.enemies.count().toString()
+    private fun PerformShooting(rand:Int){
         Toast.makeText(this@BattleActivity, battle.enemies.count().toString(), Toast.LENGTH_SHORT).show()
-        //battle.shootingTurnEnd = false
-        ShootingCloud(true)
-        //battleText.text = battle.playerIsShooting()
-        //ShootingCloud(false)
+        if(rand == 0) ShootingCloud(true)
+        else {
+            if(battle.defAlwaysShootingFirst) ShootingCloud(true)
+            else ShootingCloud(false)
+        }
     }
 
     private fun ShootingCloud(isPlayer:Boolean){
@@ -285,7 +298,7 @@ class BattleActivity : AppCompatActivity() {
 
             override fun onFinish() {
                 timer.cancel()
-                if(battle.battleStatus != 'D')
+                if(battle.battleStatus == 'X')
                     battleText.text = "Keep Fighting!"
                 if(isPlayer) {
                     defCloud.visibility = View.INVISIBLE
@@ -310,16 +323,14 @@ class BattleActivity : AppCompatActivity() {
     private fun CheckBelligerentsCount():Boolean{
         //todo check belligerents morale test! + check count -> make cloud size (height)
         return when {
-            battle.defenders.count() == 0 -> {
+            battle.battleStatus == 'D' -> {
                 battleText.text = "We have lost the battle!"
                 SetBattleMenuVis(true)
-                battle.battleStatus = 'D'
                 false
             }
-            battle.enemies.count() == 0 -> {
+            battle.battleStatus == 'V' -> {
                 battleText.text = "The battle is victorious!"
                 SetBattleMenuVis(true)
-                battle.battleStatus = 'V'
                 false
             }
             else -> true

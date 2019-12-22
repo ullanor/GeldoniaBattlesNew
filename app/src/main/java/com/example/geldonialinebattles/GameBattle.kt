@@ -3,10 +3,7 @@ package com.example.geldonialinebattles
 import android.content.EntityIterator
 import android.widget.ImageView
 import android.widget.Toast
-import com.example.geldonialinebattles.Entities.Cannon
-import com.example.geldonialinebattles.Entities.Defender
-import com.example.geldonialinebattles.Entities.EliteDefender
-import com.example.geldonialinebattles.Entities.Entity
+import com.example.geldonialinebattles.Entities.*
 import kotlin.random.Random
 
 class GameBattle{
@@ -18,7 +15,7 @@ class GameBattle{
 
     var enemiesMoraleBreakPoint:Int = 50
     var defendersMoraleBreakPoint:Int = 50
-    var sharedDataClass = SharedDataClass('X',false)
+    var sharedDataClass = SharedDataClass('X',false,false)
     var shootingTurnEnd:Boolean = false
     var battleStatus:Char = 'X'
     //var battleID:Short = 0
@@ -26,7 +23,14 @@ class GameBattle{
     var eneDeadNo:MutableList<Int> = mutableListOf()
 
     var defCannonPosition = 0 //rotate player cannon - 3 positions!
+    var defAlwaysShootingFirst = false// get value from defenders general
 
+    fun setIsAlwaysShootFirst(){
+        for(def in PlayerData.defenders)if(def is GeneralDefender){
+            defAlwaysShootingFirst = def.AlwaysShootingFirst
+            break
+        }
+    }
 
     fun createEnemies(){
         enemies = enemyGenerator.createRandomEnemies(0,sharedDataClass)
@@ -50,6 +54,22 @@ class GameBattle{
             return 1000
         else return 0
     }
+    // ----------------------------------------- MORALE ----------------------------
+    private fun checkDefMorale():Boolean{
+        var toTheEnd:Boolean = false
+        for(def:Entity in PlayerData.defenders){
+            if(def is GeneralDefender){
+                toTheEnd = def.ToTheEndSkill
+                break
+            }
+        }
+        return if(toTheEnd) PlayerData.defenders.count() <= 0
+        else PlayerData.defenders.count() < 3
+    }
+    private fun checkEneMorale():Boolean{
+        return if(sharedDataClass.enemyFightToTheEnd) enemies.count() <= 0
+        else enemies.count() < 3
+    }
 
     //player is shooting
     fun playerIsShooting():String{
@@ -68,9 +88,9 @@ class GameBattle{
 
             }
             else cannonString = "\nCannon missed!"
-            if(enemies.count() <= 0) {
+            if(checkEneMorale()) {
                 battleStatus = 'V'
-                return "$cannonString\nNo enemies left! Victory!"
+                return "$cannonString\nEnemy morale test failed! Victory!"
             }
 
         }
@@ -88,9 +108,9 @@ class GameBattle{
                 enemies.remove(enemy)
             }
 
-            if(enemies.count() <= 0) {
+            if(checkEneMorale()) {
                 battleStatus = 'V'
-                return "Hitted: $hitCounter Killed: $deadCounter $cannonString\nNo enemies left! Victory!"
+                return "Hitted: $hitCounter Killed: $deadCounter $cannonString\nEnemy morale test failed! Victory!"
             }
         }
 
@@ -152,9 +172,9 @@ class GameBattle{
 
                 }
                 else cannonString = "\nCannon missed!"
-                if(defenders.count() <= 0) {
+                if(checkDefMorale()) {
                     battleStatus = 'D'
-                    return "$cannonString\nNo defenders left! Defeat!"
+                    return "$cannonString\nOur morale test failed! Defeat!"
                 }
 
         }
@@ -172,9 +192,9 @@ class GameBattle{
                 defenders.remove(defender)
             }
 
-            if(defenders.count() <= 0) {
+            if(checkDefMorale()) {
                 battleStatus = 'D'
-                return "Hitted: $hitCounter Killed: $deadCounter $cannonString\nNo defenders left! Defeat!"
+                return "Hitted: $hitCounter Killed: $deadCounter $cannonString\nOur morale test failed! Defeat!"
             }
         }
 
