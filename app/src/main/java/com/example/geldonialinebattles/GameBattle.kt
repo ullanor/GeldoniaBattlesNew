@@ -8,35 +8,39 @@ import kotlin.random.Random
 
 class GameBattle{
     private val enemyGenerator:EnemyGenerator = EnemyGenerator()
-    var defenders:MutableList<Entity> = PlayerData.defenders
+    //var defenders:MutableList<Entity> = PlayerData.defenders
     var enemies:MutableList<Entity> = mutableListOf()
     var enemyCannon:Cannon? = null
     //var defCannon:Cannon? = PlayerData.defCannon
 
-    var enemiesMoraleBreakPoint:Int = 50
-    var defendersMoraleBreakPoint:Int = 50
-    var sharedDataClass = SharedDataClass('X',false,false)
+    //var enemiesMoraleBreakPoint:Int = 50
+    //var defendersMoraleBreakPoint:Int = 50
+    var sharedDataClass = SharedDataClass('X',false,false,0)
     var shootingTurnEnd:Boolean = false
     var battleStatus:Char = 'X'
     //var battleID:Short = 0
     var defDeadNo:MutableList<Int> = mutableListOf() //list of dead bodies
     var eneDeadNo:MutableList<Int> = mutableListOf()
 
-    var defCannonPosition = 0 //rotate player cannon - 3 positions!
-    var defAlwaysShootingFirst = false// get value from defenders general
+    var defCannonPosition:Int = 0 //rotate player cannon - 3 positions!
+    //playerSkills !!!!!!!!!!!!!
+    var defAlwaysShootingFirst:Boolean = false// get value from player
+    var defToTheDeath:Boolean = false
 
-    fun setIsAlwaysShootFirst(){
-        for(def in PlayerData.defenders)if(def is GeneralDefender){
-            defAlwaysShootingFirst = def.AlwaysShootingFirst
-            break
+    fun setPlayerSkills(){
+        if(PlayerData.defCannon != null && PlayerData.trainedCrew){
+            PlayerData.defCannon!!.shootingSkill = 100//todo for test
         }
+        if(PlayerData.quickShooter)defAlwaysShootingFirst = true
+        if(PlayerData.steadFast)defToTheDeath = true
     }
 
-    fun createEnemies(){
-        enemies = enemyGenerator.createRandomEnemies(0,sharedDataClass)
+    fun createEnemies():Short{
+        enemies = enemyGenerator.createRandomEnemies(PlayerData.locationToAttack,sharedDataClass)
 
-        enemiesMoraleBreakPoint = enemies.count()/2
-        defendersMoraleBreakPoint = defenders.count()/2
+        //enemiesMoraleBreakPoint = enemies.count()/2
+        //defendersMoraleBreakPoint = defenders.count()/2
+        return sharedDataClass.enemyType
     }
 
     fun createEnemyCannon(){
@@ -46,24 +50,18 @@ class GameBattle{
 
     }
 
-    fun victoryMoney():Short{
+    fun victoryMultiplier():Short{
         val diff = sharedDataClass.battleDifficulty
         if(diff == 'E')
-            return 300
+            return 1
         else if(diff == 'N')
-            return 1000
-        else return 0
+            return 3
+        else return 5
     }
+
     // ----------------------------------------- MORALE ----------------------------
     private fun checkDefMorale():Boolean{
-        var toTheEnd:Boolean = false
-        for(def:Entity in PlayerData.defenders){
-            if(def is GeneralDefender){
-                toTheEnd = def.ToTheEndSkill
-                break
-            }
-        }
-        return if(toTheEnd) PlayerData.defenders.count() <= 0
+        return if(defToTheDeath) PlayerData.defenders.count() <= 0
         else PlayerData.defenders.count() < 3
     }
     private fun checkEneMorale():Boolean{
@@ -96,9 +94,9 @@ class GameBattle{
         }
 
         // def troops ----------------------------------------------------------------------
-        for(x in 0 until defenders.count()){
+        for(x in 0 until PlayerData.defenders.count()){
             hits = Random.nextInt(1,101)
-            if(hits > defenders[x].shootingSkill)
+            if(hits > PlayerData.defenders[x].shootingSkill)
                 continue
             hitCounter++
             enemy = enemies[Random.nextInt(enemies.count())]
@@ -185,11 +183,11 @@ class GameBattle{
             if(hits > enemies[x].shootingSkill)
                 continue
             hitCounter++
-            defender = defenders[Random.nextInt(defenders.count())]
+            defender = PlayerData.defenders[Random.nextInt(PlayerData.defenders.count())]
             if(defender.AssessDamage()){
                 defDeadNo.add(defender.myGamePictueNo)
                 deadCounter++
-                defenders.remove(defender)
+                PlayerData.defenders.remove(defender)
             }
 
             if(checkDefMorale()) {
@@ -228,11 +226,11 @@ class GameBattle{
             }else return " That was close!"
         }
         for(number in pictureHitByCannon){
-            for(defender in defenders) {
+            for(defender in PlayerData.defenders) {
                 if(defender.myGamePictueNo == number) {
                     defDeadNo.add(defender.myGamePictueNo)
                     dead++
-                    defenders.remove(defender)
+                    PlayerData.defenders.remove(defender)
                     break
                 }
             }

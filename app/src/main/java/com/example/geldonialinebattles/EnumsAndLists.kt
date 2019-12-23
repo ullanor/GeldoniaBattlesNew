@@ -1,7 +1,7 @@
 package com.example.geldonialinebattles
 
 data class SharedDataClass(var battleDifficulty:Char,var enemyHasCannon:Boolean,
-                           var enemyFightToTheEnd:Boolean)
+                           var enemyFightToTheEnd:Boolean,var enemyType:Short)
 
 enum class BattleLocation(val location:Short){
     none(66),

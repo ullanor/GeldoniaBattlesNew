@@ -29,6 +29,7 @@ class BattleActivity : AppCompatActivity() {
     lateinit var timer: CountDownTimer
     var enemiesPictures: Array<ImageView> = arrayOf()
     var defendersPictures:Array<ImageView> = arrayOf()
+    var enemyType:Short = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +55,7 @@ class BattleActivity : AppCompatActivity() {
     private fun GetNameMapAndDiff(){
         val enumNo = BattleLocation.getByValue(PlayerData.locationToAttack)
         MainGrid.setBackgroundResource(BattleLocationMap.valueOf(enumNo.toString()).mapLoc)
+        //battleDifficultyText.text = "EneType: $enemyType ${PlayerData.locationToAttack}"
         battleDifficultyText.text = "Difficulty: ${battle.sharedDataClass.battleDifficulty}"
     }
     private fun HideAllUIElements(){
@@ -97,13 +99,11 @@ class BattleActivity : AppCompatActivity() {
         val isTabletDev = isTablet(this)
         //Toast.makeText(this@BattleActivity,isTabletDev.toString(),Toast.LENGTH_SHORT).show()
         //-----------------------------------------------------------------------------------+++
-        var test = false
-        for(def in PlayerData.defenders)if(def is GeneralDefender)test = def.AlwaysShootingFirst
+        val test = battle.defAlwaysShootingFirst.toString() + " SF: " +battle.defToTheDeath + " TC: " + PlayerData.defCannon?.shootingSkill
         Toast.makeText(this@BattleActivity,
-            "E: "+battle.sharedDataClass.enemyFightToTheEnd+" Palw: "+
-            test,Toast.LENGTH_SHORT).show()
+            "E: "+battle.sharedDataClass.enemyFightToTheEnd+" QS: "+ test,Toast.LENGTH_LONG).show()
         //-----------------------------------------------------------------------------------+++
-        val defCount:Int = battle.defenders.count()
+        val defCount:Int = PlayerData.defenders.count()
         val eneCount:Int = battle.enemies.count()
 
         //defenders --------------------------------------------------------------
@@ -155,19 +155,29 @@ class BattleActivity : AppCompatActivity() {
 
     //battle preparations! UI and units -------------------------------------------
     private fun StartBattle(){
-        battle.setIsAlwaysShootFirst()
-        battle.createEnemies()
+        battle.setPlayerSkills()
+        enemyType = battle.createEnemies()
         battle.createEnemyCannon()
         UpdateEntitiesLocalization()
-    }
+}
 
     private fun UpdateEntitiesDeadImage(){
-        for(deadNo in battle.defDeadNo){
-            defendersPictures[deadNo].setImageResource(R.drawable.bluedead)
+        if(enemyType == 1.toShort()) {
+            for(deadNo in battle.defDeadNo){//for orks arrows!
+                defendersPictures[deadNo].setImageResource(R.drawable.bluedeadarrow)
+            }
+            for(deadNo in battle.eneDeadNo){
+                enemiesPictures[deadNo].setImageResource(R.drawable.orcdead)
+            }
+        }else {
+            for(deadNo in battle.defDeadNo){//musket balls!
+                defendersPictures[deadNo].setImageResource(R.drawable.bluedead)
+            }
+            for(deadNo in battle.eneDeadNo){
+                enemiesPictures[deadNo].setImageResource(R.drawable.reddead)
+            }
         }
-        for(deadNo in battle.eneDeadNo){
-            enemiesPictures[deadNo].setImageResource(R.drawable.reddead)
-        }
+
         if(PlayerData.defCannon == null)
             defCannon.setImageResource(R.drawable.bluecannon_destroy)
         if(battle.enemyCannon == null)
@@ -184,9 +194,9 @@ class BattleActivity : AppCompatActivity() {
             eneCannon.visibility = View.VISIBLE
         }
 
-        for(x in 0 until battle.defenders.count()){
-            battle.defenders[x].myGamePictueNo = x
-            defendersPictures[x].setImageResource(battle.defenders[x].EntityImage)
+        for(x in 0 until PlayerData.defenders.count()){
+            PlayerData.defenders[x].myGamePictueNo = x
+            defendersPictures[x].setImageResource(PlayerData.defenders[x].EntityImage)
             defendersPictures[x].visibility = View.VISIBLE
         }
         for(x in 0 until battle.enemies.count()){
@@ -224,7 +234,7 @@ class BattleActivity : AppCompatActivity() {
         }
         moveButton.setOnClickListener{
             if(CheckBattleIsActiveStatus()) {
-                val test:Int = (battle.defenders[0] as Defender).expPoints
+                val test = ""//val test:Int = (PlayerData.defenders[0] as Defender).expPoints
                 Toast.makeText(this@BattleActivity, "Battle is not finished! $test", Toast.LENGTH_SHORT).show()
             }
             else{
@@ -233,8 +243,10 @@ class BattleActivity : AppCompatActivity() {
                 //StartBattle()
                 //todo get money from battle based on map difficulty
                 if(battle.battleStatus == 'V') {
+                    val multiplier:Short = battle.victoryMultiplier()
+                    PlayerData.playerEXP = (PlayerData.playerEXP + multiplier).toShort()
                     PlayerData.playerLocations.add(PlayerData.locationToAttack)
-                    PlayerData.gold = (PlayerData.gold + battle.victoryMoney()).toShort()
+                    PlayerData.gold = (PlayerData.gold + 300*multiplier).toShort()
                 }
                 PlayerData.locationToAttack = 66
                 PlayerData.playerLocIsAttacked = false
@@ -263,10 +275,15 @@ class BattleActivity : AppCompatActivity() {
             else ShootingCloud(false)
         }
     }
+    private fun setBelligerentCloud(){
+        if(enemyType == 1.toShort())eneCloud.setImageResource(R.drawable.arrowcloud)//orks arrows!
+        else eneCloud.setImageResource(R.drawable.firingcloud)
+    }
 
     private fun ShootingCloud(isPlayer:Boolean){
         if(!CheckBelligerentsCount())
             return
+        setBelligerentCloud()
 
         var counter:Short= 0
         SetBattleMenuVis(false)
@@ -275,10 +292,11 @@ class BattleActivity : AppCompatActivity() {
             battleText.text = battle.playerIsShooting()
             UpdateEntitiesDeadImage()
         }
-        else {
+        else {//enemy shooting
             eneCloud.visibility = View.VISIBLE
             battleText.text = battle.enemyIsShooting()
-            UpdateEntitiesDeadImage()
+            if(enemyType != 1.toShort())
+                UpdateEntitiesDeadImage()
         }
 
         timer = object: CountDownTimer(2000, 500) {
@@ -287,12 +305,26 @@ class BattleActivity : AppCompatActivity() {
                 if(counter == 2.toShort()) {
                     if(isPlayer)
                         defCloud.setImageResource(R.drawable.firingcloud1)
-                    else eneCloud.setImageResource(R.drawable.firingcloud1)
+                    else {
+                        if(enemyType == 1.toShort()) {
+                            defCloud.setImageResource(R.drawable.arrowcloud)
+                            defCloud.visibility = View.VISIBLE
+                            eneCloud.visibility = View.INVISIBLE
+                        }
+                        else eneCloud.setImageResource(R.drawable.firingcloud1)
+                    }
                 }
                 else if(counter == 3.toShort()) {
                     if(isPlayer)
                         defCloud.setImageResource(R.drawable.firingcloud2)
-                    else eneCloud.setImageResource(R.drawable.firingcloud2)
+                    else {
+                        if(enemyType == 1.toShort()) {
+                            UpdateEntitiesDeadImage()
+                            defCloud.setImageResource(R.drawable.firingcloud)
+                            defCloud.visibility = View.INVISIBLE
+                        }
+                        else eneCloud.setImageResource(R.drawable.firingcloud2)
+                    }
                 }
             }
 

@@ -29,10 +29,11 @@ class MainActivity : AppCompatActivity() {
         SetButtons()
         SetUI()
 
-        var test = ""
-        for(dupa in PlayerData.playerLocations)test += " " + dupa
-        Toast.makeText(this@MainActivity,
-            "Conquered Territories: "+test,Toast.LENGTH_SHORT).show()//todo to remove its spam!
+        //first time on make a default save
+        if(!File("$filesDir/geldonia.ser").exists()){
+            ToastMe("Welcome to Geldonia!")
+            serializeTest()
+        }
     }
 
     private fun getAttackLocation(){
@@ -61,13 +62,35 @@ class MainActivity : AppCompatActivity() {
 
     private fun SetUI(){
         //battleNameText.setText(PlayerData.testString)
-
         BarracksVisibility(false)
         UpdateUI()
+        UpdateSkills()
     }
 
     private fun UpdateUI(){
         playerGold.text = PlayerData.gold.toString()
+    }
+
+    private fun UpdateSkills(){
+        playerEXP.text = PlayerData.playerEXP.toString()
+
+        steadFastButton.visibility = View.INVISIBLE
+        quickShootButton.visibility = View.INVISIBLE
+        trainedCrewButton.visibility = View.INVISIBLE
+
+        steadFastImage.setImageResource(R.drawable.seal_grey)
+        quickShootImage.setImageResource(R.drawable.seal_grey)
+        trainedCrewImage.setImageResource(R.drawable.seal_grey)
+
+        if(PlayerData.steadFast)steadFastImage.setImageResource(R.drawable.seal_green)
+        if(PlayerData.quickShooter)quickShootImage.setImageResource(R.drawable.seal_red)
+        if(PlayerData.trainedCrew)trainedCrewImage.setImageResource(R.drawable.seal_black)
+
+        if(PlayerData.playerEXP >= 3){
+            if(!PlayerData.steadFast)steadFastButton.visibility = View.VISIBLE
+            if(!PlayerData.quickShooter)quickShootButton.visibility = View.VISIBLE
+            if(!PlayerData.trainedCrew)trainedCrewButton.visibility = View.VISIBLE
+        }
     }
 
     // buttons -------------------------------------------------------------------------------
@@ -94,11 +117,11 @@ class MainActivity : AppCompatActivity() {
 
         Test.setOnClickListener{//todo for defenders stats etc. and general spec skills
             //todo SKILLS isAlwaysShootingFirst and FightToTheEnd
-            for(def in PlayerData.defenders)if(def is GeneralDefender){
+/*            for(def in PlayerData.defenders)if(def is GeneralDefender){
                 def.AlwaysShootingFirst = true
                 ToastMe(def.AlwaysShootingFirst.toString())
                 break
-            }
+            }*/
 
 
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.map_game,null)
@@ -121,25 +144,43 @@ class MainActivity : AppCompatActivity() {
                 mAlertDialog.dismiss()
             }
         }
+        // player skills buttons ----------------------------------------------------------------
+        steadFastButton.setOnClickListener{
+            PlayerData.playerEXP = (PlayerData.playerEXP - 3).toShort();
+            PlayerData.steadFast = true
+            UpdateSkills()
+        }
+        quickShootButton.setOnClickListener{
+            PlayerData.playerEXP = (PlayerData.playerEXP - 3).toShort();
+            PlayerData.quickShooter = true
+            UpdateSkills()
+        }
+        trainedCrewButton.setOnClickListener{
+            PlayerData.playerEXP = (PlayerData.playerEXP - 3).toShort();
+            PlayerData.trainedCrew = true
+            UpdateSkills()
+        }
+
         // save and load buttons -------------------------------
         SaveButton.setOnClickListener{
             serializeTest()
         }
 
         LoadButton.setOnClickListener{
-            if(!File("$filesDir/geldonia.ser").exists()){
+/*            if(!File("$filesDir/geldonia.ser").exists()){
                 ToastMe("No saved data found!")
                 return@setOnClickListener
-            }
+            }*/
             deserializeTest()
             PlayerData.playerLocIsAttacked = false
             UpdateUI()
             getAttackLocation()
             isBarracksVisible = false
             BarracksVisibility(false)
+            UpdateSkills()
         }
 
-        //shop buttons ---------------------------------------------
+        //shop buttons --------------------------------------------- ++++ --------------------
         shopButton.setOnClickListener{
             if(isBarracksVisible){
                 isBarracksVisible = false
@@ -159,6 +200,12 @@ class MainActivity : AppCompatActivity() {
             UpdateUI()
             CountDefendersByType()
         }
+        //remFus
+        remFusilierButton.setOnClickListener{
+            gameMain.remFusilier()
+            UpdateUI()
+            CountDefendersByType()
+        }
 
         buyGrenadierButton.setOnClickListener{
             if(PlayerData.gold < 300.toShort() || PlayerData.defenders.count() >= 10){
@@ -169,13 +216,25 @@ class MainActivity : AppCompatActivity() {
             UpdateUI()
             CountDefendersByType()
         }
+        //remGren
+        remGrenadierButton.setOnClickListener{
+            gameMain.remGrenadier()
+            UpdateUI()
+            CountDefendersByType()
+        }
 
         buyGeneralButton.setOnClickListener{
-            if(PlayerData.gold < 750.toShort() || gameMain.generalCount != 0.toShort()){
+            if(PlayerData.gold < 750.toShort() || gameMain.generalCount != 0.toShort() || PlayerData.defenders.count() >= 10){
                 Toast.makeText(this@MainActivity,"Not enough gold or too many defenders!",Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             gameMain.buyGeneral()
+            UpdateUI()
+            CountDefendersByType()
+        }
+        //remGen
+        remGeneralButton.setOnClickListener{
+            gameMain.remGeneral()
             UpdateUI()
             CountDefendersByType()
         }
@@ -186,6 +245,12 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             gameMain.buyCannon()
+            UpdateUI()
+            CountDefendersByType()
+        }
+        //remCannon
+        remCannonButton.setOnClickListener{
+            gameMain.remCannon()
             UpdateUI()
             CountDefendersByType()
         }
@@ -254,7 +319,8 @@ class MainActivity : AppCompatActivity() {
     fun serializeTest() {
         val file = "geldonia.ser"
         val toSaveData = GeldoniaSaveData(PlayerData.gold,PlayerData.defenders,
-            PlayerData.locationToAttack,PlayerData.defCannon,PlayerData.playerLocations)
+            PlayerData.locationToAttack,PlayerData.defCannon,PlayerData.playerLocations,
+            PlayerData.playerEXP,PlayerData.trainedCrew,PlayerData.steadFast,PlayerData.quickShooter)
 
         var fos: FileOutputStream? = null
         fos = openFileOutput(file, Context.MODE_PRIVATE)
@@ -266,7 +332,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
         } catch (e: Exception) {
-            Toast.makeText(this@MainActivity, e.toString(), Toast.LENGTH_LONG).show()
+            Toast.makeText(this@MainActivity, e.toString(), Toast.LENGTH_SHORT).show()
         }
         fos?.close()
     }
@@ -290,6 +356,10 @@ class MainActivity : AppCompatActivity() {
                     PlayerData.locationToAttack = toLoadData.locationToAttack
                     PlayerData.defCannon = toLoadData.defCannon
                     PlayerData.playerLocations = toLoadData.playerLocations
+                    PlayerData.playerEXP = toLoadData.playerExp
+                    PlayerData.trainedCrew = toLoadData.trainedCrew
+                    PlayerData.steadFast = toLoadData.steadFast
+                    PlayerData.quickShooter = toLoadData.quickShooter
                 }
                 else -> Toast.makeText(this@MainActivity, "Failed to restore", Toast.LENGTH_SHORT).show()
             }

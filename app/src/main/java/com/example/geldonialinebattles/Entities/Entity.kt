@@ -27,7 +27,7 @@ abstract class Entity(val name:String, var health:Int,
     }
 
     open val EntityImage:Int = R.drawable.redfis
-    open val EntityDeadImage:Int = R.drawable.reddead
+    //open val EntityDeadImage:Int = R.drawable.reddead
 }
 
 //enemy test

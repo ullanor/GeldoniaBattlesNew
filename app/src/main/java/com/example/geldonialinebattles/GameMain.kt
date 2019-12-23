@@ -26,13 +26,13 @@ class GameMain {
 
     fun createTestDefenders(){
         val testDefenders = mutableListOf(
-            EliteDefender("Elite",100,90,888),
-            Defender("D2",100,40,0),
-            Defender("D2",100,40,0),
-            Defender("D2",100,40,0),
-            Defender("D2",100,40,0),
-            Defender("D2",100,40,0),
-            Defender("testdef5",100,50,0)
+            EliteDefender("Elite",100,90),
+            Defender("D2",100,40),
+            Defender("D2",100,40),
+            Defender("D2",100,40),
+            Defender("D2",100,40),
+            Defender("D2",100,40),
+            Defender("testdef5",100,50)
         )
         PlayerData.defenders.addAll(testDefenders)
     }
@@ -40,29 +40,63 @@ class GameMain {
     //defender shop operations -----------------------------------------
     fun buyFusilier(){
         PlayerData.defenders.add(
-            Defender("Fusilier",100,10,888))
+            Defender("Fusilier",100,10))
         PlayerData.gold = (PlayerData.gold - 50).toShort()
     }
 
     fun buyGrenadier(){
         PlayerData.defenders.add(
-            EliteDefender("Elite",120,90,0))
+            EliteDefender("Elite",120,90))
         PlayerData.gold = (PlayerData.gold - 300).toShort()
     }
 
     fun buyGeneral(){
         if(PlayerData.defenders.count() != 0) {
             val tempDef = PlayerData.defenders[0]
-            PlayerData.defenders[0] = GeneralDefender("General", 100, 100, 0, 0)
+            PlayerData.defenders[0] = GeneralDefender("General", 100, 100)
             PlayerData.defenders.add(tempDef)
         }else
-            PlayerData.defenders.add(GeneralDefender("General", 100, 100, 0, 0))
+            PlayerData.defenders.add(GeneralDefender("General", 100, 100))
         PlayerData.gold = (PlayerData.gold - 750).toShort()
     }
 
     fun buyCannon(){
         PlayerData.defCannon = Cannon("howitzer",100,80)
         PlayerData.gold = (PlayerData.gold - 1000).toShort()
+    }
+    // removing defenders ----------------------------------------
+    fun remFusilier(){
+        PlayerData.gold = (PlayerData.gold + 25).toShort()
+        for(def in PlayerData.defenders){
+            if(def !is GeneralDefender && def !is EliteDefender){
+                PlayerData.defenders.remove(def)
+                break
+            }
+        }
+    }
+
+    fun remGrenadier(){
+        PlayerData.gold = (PlayerData.gold + 150).toShort()
+        for(def in PlayerData.defenders){
+            if(def is EliteDefender){
+                PlayerData.defenders.remove(def)
+                break
+            }
+        }
+    }
+
+    fun remGeneral(){
+        PlayerData.gold = (PlayerData.gold + 375).toShort()
+        for(def in PlayerData.defenders){
+            if(def is GeneralDefender){
+                PlayerData.defenders.remove(def)
+                break
+            }
+        }
+    }
+    fun remCannon(){
+        PlayerData.gold = (PlayerData.gold + 500).toShort()
+        PlayerData.defCannon = null
     }
 
     fun cannonStatus():String{
