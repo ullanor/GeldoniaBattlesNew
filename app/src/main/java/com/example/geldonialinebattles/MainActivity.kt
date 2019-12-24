@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         Test.setOnClickListener{//todo for defenders stats etc. and general spec skills
-            //todo SKILLS isAlwaysShootingFirst and FightToTheEnd
+            //todo DISPLAY IMAGE AS ALERT DIALOG WITH DESCRIPTION OF ALL GAME FEATURES -> SEALS,SKILLS,TROOPS STATS
 /*            for(def in PlayerData.defenders)if(def is GeneralDefender){
                 def.AlwaysShootingFirst = true
                 ToastMe(def.AlwaysShootingFirst.toString())
