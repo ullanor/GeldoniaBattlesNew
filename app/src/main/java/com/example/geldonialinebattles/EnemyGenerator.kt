@@ -18,6 +18,7 @@ class EnemyGenerator {
     fun createRandomEnemies(targetLocation:Short,battleData:SharedDataClass):MutableList<Entity> {
         if(targetLocation == 4.toShort()){//todo orks lcoation test
             battleData.enemyType = 1
+            battleData.enemyHasCannon = true
             return orkEasy()
         }
 

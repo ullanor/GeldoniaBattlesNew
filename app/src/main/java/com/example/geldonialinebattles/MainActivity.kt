@@ -11,15 +11,24 @@ import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.map_game.view.*
 import android.content.Context
 import android.content.DialogInterface
+import android.media.MediaPlayer
 import android.view.WindowManager
 import com.example.geldonialinebattles.Entities.GeneralDefender
 import java.io.*
 import java.lang.Exception
+import android.provider.Settings.System.DEFAULT_RINGTONE_URI
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.provider.Settings
+import androidx.core.content.withStyledAttributes
+import androidx.core.view.isVisible
 
 
 class MainActivity : AppCompatActivity() {
     val gameMain:GameMain = GameMain()
     var isBarracksVisible:Boolean = false
+    var musicOn:Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getAttackLocation(){
         mapButton.visibility = View.VISIBLE
-        SaveButton.visibility = View.VISIBLE
+        SaveButton.isVisible = true
         if(PlayerData.playerLocations.count() == 5){//todo VICTORY! test with 5 locations
             battleNameText.text = "FULL VICTORY!"
             MainMenu.setBackgroundResource(R.drawable.victorywall)
@@ -48,13 +57,13 @@ class MainActivity : AppCompatActivity() {
         if(PlayerData.playerLocations.count() == 0 && !PlayerData.playerLocIsAttacked){//todo GAMEOVER
             battleNameText.text = "GAME OVER!"
             mapButton.visibility = View.INVISIBLE
-            SaveButton.visibility = View.INVISIBLE
+            SaveButton.isVisible = false
             return
         }
         if(PlayerData.playerLocIsAttacked){
             battleNameText.text = "Defend ${BattleLocation.getByValue(PlayerData.locationToAttack)}"
             mapButton.visibility = View.INVISIBLE
-            SaveButton.visibility = View.INVISIBLE
+            SaveButton.isVisible = false
             return
         }
         battleNameText.text = "Battle of ${BattleLocation.getByValue(PlayerData.locationToAttack)}"
@@ -115,6 +124,16 @@ class MainActivity : AppCompatActivity() {
             moveToMap()
         }
 
+        StopMusicButton.setOnClickListener{//music background player
+            musicOn = if(musicOn){
+                stopService(Intent(this,MusicService::class.java))
+                false
+            }else{
+                startService(Intent(this,MusicService::class.java))
+                true
+            }
+        }
+
         Test.setOnClickListener{//todo for defenders stats etc. and general spec skills
             //todo DISPLAY IMAGE AS ALERT DIALOG WITH DESCRIPTION OF ALL GAME FEATURES -> SEALS,SKILLS,TROOPS STATS
 /*            for(def in PlayerData.defenders)if(def is GeneralDefender){
@@ -122,7 +141,6 @@ class MainActivity : AppCompatActivity() {
                 ToastMe(def.AlwaysShootingFirst.toString())
                 break
             }*/
-
 
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.map_game,null)
             val mBuilder = AlertDialog.Builder(this)

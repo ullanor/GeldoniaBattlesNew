@@ -13,6 +13,7 @@ class splashScreen: AppCompatActivity() {
 
         Handler().postDelayed(
             {
+                startService(Intent(this,MusicService::class.java))
                 startActivity(Intent(this,MainActivity::class.java))
             },
             500L

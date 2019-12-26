@@ -30,6 +30,7 @@ class BattleActivity : AppCompatActivity() {
     var enemiesPictures: Array<ImageView> = arrayOf()
     var defendersPictures:Array<ImageView> = arrayOf()
     var enemyType:Short = 0
+    lateinit var battleSound:SoundPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,7 @@ class BattleActivity : AppCompatActivity() {
 
         enemiesPictures = GetEnemiesPictures()
         defendersPictures = GetDefendersPictures()
+        battleSound = SoundPlayer(this)
 
         battle = GameBattle()
         SetButtons()
@@ -181,7 +183,11 @@ class BattleActivity : AppCompatActivity() {
         if(PlayerData.defCannon == null)
             defCannon.setImageResource(R.drawable.bluecannon_destroy)
         if(battle.enemyCannon == null)
-            eneCannon.setImageResource(R.drawable.enemycannon_destroy)
+        {
+            if(battle.sharedDataClass.enemyType == 1.toShort())
+                eneCannon.setImageResource(R.drawable.bluefis)
+            else    eneCannon.setImageResource(R.drawable.enemycannon_destroy)
+        }
     }
 
     private fun UpdateEntitiesLocalization(){
@@ -190,7 +196,9 @@ class BattleActivity : AppCompatActivity() {
             defCannon.visibility = View.VISIBLE
         }
         if(battle.sharedDataClass.enemyHasCannon) {
-            eneCannon.setImageResource(R.drawable.redcannon)
+            if(battle.sharedDataClass.enemyType == 1.toShort())
+                eneCannon.setImageResource(R.drawable.orcwarrior)
+            else    eneCannon.setImageResource(R.drawable.redcannon)
             eneCannon.visibility = View.VISIBLE
         }
 
@@ -275,15 +283,24 @@ class BattleActivity : AppCompatActivity() {
             else ShootingCloud(false)
         }
     }
-    private fun setBelligerentCloud(){
-        if(enemyType == 1.toShort())eneCloud.setImageResource(R.drawable.arrowcloud)//orks arrows!
-        else eneCloud.setImageResource(R.drawable.firingcloud)
+    private fun setBelligerentCloud(isPlayer: Boolean){
+        if(enemyType == 1.toShort() && !isPlayer) {
+            eneCloud.setImageResource(R.drawable.arrowcloud)//orks arrows!
+            //play shooting orks
+            battleSound.playBowSound()
+            battleSound.playDemonSound()
+        }else if(enemyType == 2.toShort() && !isPlayer)battleSound.playDemonSound()
+        else {
+            eneCloud.setImageResource(R.drawable.firingcloud)
+            //play shooting muskets
+            battleSound.playMusketSound()
+        }
     }
 
     private fun ShootingCloud(isPlayer:Boolean){
         if(!CheckBelligerentsCount())
             return
-        setBelligerentCloud()
+        setBelligerentCloud(isPlayer) //todo and shooting sounds to play!
 
         var counter:Short= 0
         SetBattleMenuVis(false)

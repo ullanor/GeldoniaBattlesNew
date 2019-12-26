@@ -1,5 +1,6 @@
 package com.example.geldonialinebattles
 
+import android.content.Context
 import android.content.EntityIterator
 import android.widget.ImageView
 import android.widget.Toast
@@ -46,8 +47,12 @@ class GameBattle{
     fun createEnemyCannon(){
         if(!sharedDataClass.enemyHasCannon)
             return
-        enemyCannon = Cannon("cannon",100,80)
-
+        if(sharedDataClass.enemyType == 1.toShort()) {//todo demon as cannon
+            enemyCannon = Cannon("demon", 100, 80)
+        }
+        else {
+            enemyCannon = Cannon("cannon", 100, 75)
+        }
     }
 
     fun victoryMultiplier():Short{
@@ -61,7 +66,7 @@ class GameBattle{
 
     // ----------------------------------------- MORALE ----------------------------
     private fun checkDefMorale():Boolean{
-        return if(defToTheDeath) PlayerData.defenders.count() <= 0
+        return if(defToTheDeath ) PlayerData.defenders.count() <= 0
         else PlayerData.defenders.count() < 3
     }
     private fun checkEneMorale():Boolean{
