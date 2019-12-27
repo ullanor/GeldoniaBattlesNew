@@ -9,7 +9,14 @@ enum class BattleLocation(val location:Short){
     plain(1),
     lake(2),
     redCity(3),
-    desert(4);
+    hills(4),
+    mountain(5),
+    orkCity(6),
+    valley(7),
+    desert(8),
+    redOutpost(9),
+    sands(10),
+    hell(11);
 
     companion object {
         private val values = values()
@@ -23,5 +30,12 @@ enum class BattleLocationMap(val mapLoc:Int){
     plain(R.drawable.mapplain),
     lake(R.drawable.maplake),
     redCity(R.drawable.cityred),
-    desert(R.drawable.mapdesert);
+    hills(R.drawable.maphills),
+    mountain(R.drawable.mapmountain),
+    orkCity(R.drawable.mapmountainorcs),
+    valley(R.drawable.mapplain),
+    desert(R.drawable.mapdesert),
+    redOutpost(R.drawable.outpostred),
+    sands(R.drawable.mapdesert),
+    hell(R.drawable.maphell);
 }

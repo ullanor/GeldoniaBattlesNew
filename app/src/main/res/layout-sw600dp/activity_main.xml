@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MainMenu"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/wall"
+    android:padding="5dp"
+    tools:context=".MainActivity"
+    android:gravity="center">
+
+    <TableLayout
+        android:id="@+id/menuLeft"
+        android:layout_width="250dp"
+        android:layout_height="500dp"
+        android:layout_marginRight="15dp">
+
+        <TableRow
+            android:id="@+id/playerRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:background="@drawable/gold_stack"/>
+            <!--goldStack -> https://www.pikpng.com/pngl/m/0-7327_coin-stack-png-stack-of-coins-transparent-png.png -->
+
+            <TextView
+                android:id="@+id/playerGold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_span="2"
+                android:background="@null"
+                android:text="50000"
+                android:textColor="#FFC107"
+                android:textSize="36sp"
+                android:textStyle="italic"
+                android:layout_marginRight="-20dp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/playerRow2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:background="@drawable/flag_blue"/>
+            <!--goldStack -> https://www.pikpng.com/pngl/m/0-7327_coin-stack-png-stack-of-coins-transparent-png.png -->
+
+            <TextView
+                android:id="@+id/playerEXP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_span="2"
+                android:background="@null"
+                android:text="50000"
+                android:textColor="#00FF32"
+                android:textSize="36sp"
+                android:textStyle="italic"
+                android:layout_marginRight="-20dp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/playerSkillsImages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp">
+
+            <ImageView
+                android:id="@+id/trainedCrewImage"
+                android:layout_width="30dp"
+                android:layout_height="90dp"
+                android:layout_marginRight="80dp"
+                android:background="@drawable/seal_grey" />
+
+            <ImageView
+                android:id="@+id/steadFastImage"
+                android:layout_width="30dp"
+                android:layout_height="90dp"
+                android:background="@drawable/seal_grey" />
+
+            <ImageView
+                android:id="@+id/quickShootImage"
+                android:layout_width="30dp"
+                android:layout_height="90dp"
+                android:layout_marginLeft="75dp"
+                android:background="@drawable/seal_grey" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/playerSkillstest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:layout_marginTop="10dp">
+
+                <Button
+                    android:id="@+id/trainedCrewButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="+TC"
+                    android:background="#FFC107" />
+
+                <Button
+                    android:id="@+id/steadFastButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="+SF"
+                    android:background="#FFC107"
+                    android:layout_marginLeft="50dp"/>
+
+                <Button
+                    android:id="@+id/quickShootButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="+QS"
+                    android:background="#FFC107"
+                    android:layout_marginLeft="45dp"/>
+
+            </LinearLayout>
+        </TableRow>
+
+
+    </TableLayout>
+
+    <LinearLayout
+        android:id="@+id/Menu"
+        android:layout_width="wrap_content"
+        android:layout_height="500dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/startBattleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            android:shadowColor="#000000"
+            android:text="Start Battle"
+            android:textColor="#FF0000"
+            android:textColorHighlight="#FF9800"
+            android:textColorLink="#FFEB3B"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/battleNameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#A31814"
+            android:text="JOWISZ"
+            android:textAlignment="center"
+            android:textSize="24dp" />
+
+        <Button
+            android:id="@+id/mapButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="~ Map ~"
+            android:textColor="#122DBB"
+            android:textSize="28dp" />
+
+        <Button
+            android:id="@+id/Test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Info"
+            android:textSize="24dp" />
+
+        <Button
+            android:id="@+id/StopMusicButton"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="80dp"
+            android:text="Music On/Off"
+            android:textSize="22dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+        <Button
+            android:id="@+id/SaveButton"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="SAVE"
+            android:textSize="26dp" />
+
+        <Button
+            android:id="@+id/LoadButton"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="LOAD"
+            android:textSize="26dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TableLayout
+        android:id="@+id/DefenderShop"
+        android:layout_width="250dp"
+        android:layout_height="500dp"
+        android:layout_marginLeft="15dp">
+
+        <TableRow
+            android:id="@+id/barracksRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/shopButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_span="3"
+                android:text="Barracks"
+                android:textSize="24dp" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/fusRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#D3C371">
+
+            <ImageButton
+                android:id="@+id/buyFusilierButton"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/bluefis" />
+
+            <TextView
+                android:id="@+id/fusText"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="X0 50g"
+                android:textColor="#000000"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/remFusilierButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:text="X"
+                android:textColor="#FF0000"
+                android:textSize="10sp" />
+
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/greRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#D3C371">
+
+            <ImageButton
+                android:id="@+id/buyGrenadierButton"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/bluegren" />
+
+            <TextView
+                android:id="@+id/greText"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="X0 300g"
+                android:textColor="#000000"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/remGrenadierButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:text="X"
+                android:textColor="#FF0000"
+                android:textSize="10sp" />
+
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/genRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#D3C371">
+
+            <ImageButton
+                android:id="@+id/buyGeneralButton"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/bluegeneral" />
+
+            <TextView
+                android:id="@+id/genText"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="X0 750g"
+                android:textColor="#000000"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/remGeneralButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:text="X"
+                android:textColor="#FF0000"
+                android:textSize="10sp" />
+
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/canRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#D3C371">
+
+            <ImageButton
+                android:id="@+id/buyCannonButton"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/bluecannon" />
+
+            <TextView
+                android:id="@+id/canText"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="X0 1000g"
+                android:textColor="#000000"
+                android:textSize="22sp" />
+
+            <Button
+                android:id="@+id/remCannonButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:text="X"
+                android:textColor="#FF0000"
+                android:textSize="10sp" />
+
+
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

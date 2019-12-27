@@ -4,12 +4,11 @@ import com.example.geldonialinebattles.Entities.Cannon
 import com.example.geldonialinebattles.Entities.EliteDefender
 import com.example.geldonialinebattles.Entities.Entity
 import java.io.Serializable
-import java.lang.StringBuilder
 
 class PlayerData{
     companion object{
-        var testString:String = "JOWISZ 2"
-        var gameOver:Boolean = false
+        //var testString:String = "JOWISZ 2"
+        //var gameOver:Boolean = false
         var playerLocIsAttacked = false
 
         //to save -------------- player abilities

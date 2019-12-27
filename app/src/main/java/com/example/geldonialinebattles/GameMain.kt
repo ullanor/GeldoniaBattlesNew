@@ -24,44 +24,29 @@ class GameMain {
         }
     }
 
-    fun createTestDefenders(){
-        val testDefenders = mutableListOf(
-            EliteDefender("Elite",100,90),
-            Defender("D2",100,40),
-            Defender("D2",100,40),
-            Defender("D2",100,40),
-            Defender("D2",100,40),
-            Defender("D2",100,40),
-            Defender("testdef5",100,50)
-        )
-        PlayerData.defenders.addAll(testDefenders)
-    }
-
     //defender shop operations -----------------------------------------
     fun buyFusilier(){
-        PlayerData.defenders.add(
-            Defender("Fusilier",100,10))
+        PlayerData.defenders.add(Defender())
         PlayerData.gold = (PlayerData.gold - 50).toShort()
     }
 
     fun buyGrenadier(){
-        PlayerData.defenders.add(
-            EliteDefender("Elite",120,90))
+        PlayerData.defenders.add(EliteDefender())
         PlayerData.gold = (PlayerData.gold - 300).toShort()
     }
 
     fun buyGeneral(){
         if(PlayerData.defenders.count() != 0) {
             val tempDef = PlayerData.defenders[0]
-            PlayerData.defenders[0] = GeneralDefender("General", 100, 100)
+            PlayerData.defenders[0] = GeneralDefender()
             PlayerData.defenders.add(tempDef)
         }else
-            PlayerData.defenders.add(GeneralDefender("General", 100, 100))
+            PlayerData.defenders.add(GeneralDefender())
         PlayerData.gold = (PlayerData.gold - 750).toShort()
     }
 
     fun buyCannon(){
-        PlayerData.defCannon = Cannon("howitzer",100,80)
+        PlayerData.defCannon = Cannon("Player Cannon",2,50)
         PlayerData.gold = (PlayerData.gold - 1000).toShort()
     }
     // removing defenders ----------------------------------------

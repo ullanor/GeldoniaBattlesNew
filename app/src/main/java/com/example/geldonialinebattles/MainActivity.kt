@@ -8,20 +8,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import kotlinx.android.synthetic.main.map_game.view.*
+import kotlinx.android.synthetic.main.info_game.view.*
 import android.content.Context
 import android.content.DialogInterface
-import android.media.MediaPlayer
 import android.view.WindowManager
-import com.example.geldonialinebattles.Entities.GeneralDefender
 import java.io.*
 import java.lang.Exception
-import android.provider.Settings.System.DEFAULT_RINGTONE_URI
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.provider.Settings
-import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
 
 
@@ -48,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     private fun getAttackLocation(){
         mapButton.visibility = View.VISIBLE
         SaveButton.isVisible = true
-        if(PlayerData.playerLocations.count() == 5){//todo VICTORY! test with 5 locations
+        if(PlayerData.playerLocations.count() == 12){//todo VICTORY! test with 5 locations
             battleNameText.text = "FULL VICTORY!"
             MainMenu.setBackgroundResource(R.drawable.victorywall)
             mapButton.visibility = View.INVISIBLE
@@ -136,13 +128,8 @@ class MainActivity : AppCompatActivity() {
 
         Test.setOnClickListener{//todo for defenders stats etc. and general spec skills
             //todo DISPLAY IMAGE AS ALERT DIALOG WITH DESCRIPTION OF ALL GAME FEATURES -> SEALS,SKILLS,TROOPS STATS
-/*            for(def in PlayerData.defenders)if(def is GeneralDefender){
-                def.AlwaysShootingFirst = true
-                ToastMe(def.AlwaysShootingFirst.toString())
-                break
-            }*/
 
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.map_game,null)
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.info_game,null)
             val mBuilder = AlertDialog.Builder(this)
                 .setView(mDialogView)
                 //.setTitle("Map Form")
@@ -151,14 +138,10 @@ class MainActivity : AppCompatActivity() {
             val layoutParams = WindowManager.LayoutParams()
             layoutParams.copyFrom(mAlertDialog.window?.attributes)
             layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
-            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+            layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
             mAlertDialog.window?.attributes = layoutParams
 
-            mDialogView.location1.setOnClickListener{
-                mAlertDialog.dismiss()
-                Toast.makeText(this@MainActivity,"WORKING!",Toast.LENGTH_SHORT).show()
-            }
-            mDialogView.location2.setOnClickListener{
+            mDialogView.exitB.setOnClickListener{
                 mAlertDialog.dismiss()
             }
         }

@@ -32,7 +32,7 @@ class MapActivity : AppCompatActivity() {
 
     private fun CheckAmbushProbability(location:Short){
         val rand = Random.nextInt(0,3)
-        if(rand == 0 && PlayerData.playerLocations.count() >= 0){
+        if(rand == 2 && PlayerData.playerLocations.count() >= 0){
             val toRem:Short = Random.nextInt(PlayerData.playerLocations.count()).toShort()
             PlayerData.locationToAttack = PlayerData.playerLocations[toRem.toInt()]
             PlayerData.playerLocations.removeAt(toRem.toInt())
@@ -99,7 +99,7 @@ class MapActivity : AppCompatActivity() {
             return@setOnClickListener
         }
 
-/*        location5.setOnClickListener{
+        location5.setOnClickListener{
             if(playerLocations.contains(5))return@setOnClickListener
             for(loc in playerLocations)if(loc5ways.contains(loc)){
                 CheckAmbushProbability(5)
@@ -108,7 +108,73 @@ class MapActivity : AppCompatActivity() {
             }
             CannotGetThereMsg()
             return@setOnClickListener
-        }*/
+        }
+
+        location6.setOnClickListener{
+            if(playerLocations.contains(6))return@setOnClickListener
+            for(loc in playerLocations)if(loc6ways.contains(loc)){
+                CheckAmbushProbability(6)
+                quitMap()
+                return@setOnClickListener
+            }
+            CannotGetThereMsg()
+            return@setOnClickListener
+        }
+
+        location7.setOnClickListener{
+            if(playerLocations.contains(7))return@setOnClickListener
+            for(loc in playerLocations)if(loc7ways.contains(loc)){
+                CheckAmbushProbability(7)
+                quitMap()
+                return@setOnClickListener
+            }
+            CannotGetThereMsg()
+            return@setOnClickListener
+        }
+
+        location8.setOnClickListener{
+            if(playerLocations.contains(8))return@setOnClickListener
+            for(loc in playerLocations)if(loc8ways.contains(loc)){
+                CheckAmbushProbability(8)
+                quitMap()
+                return@setOnClickListener
+            }
+            CannotGetThereMsg()
+            return@setOnClickListener
+        }
+
+        location9.setOnClickListener{
+            if(playerLocations.contains(9))return@setOnClickListener
+            for(loc in playerLocations)if(loc9ways.contains(loc)){
+                CheckAmbushProbability(9)
+                quitMap()
+                return@setOnClickListener
+            }
+            CannotGetThereMsg()
+            return@setOnClickListener
+        }
+
+        location10.setOnClickListener{
+            if(playerLocations.contains(10))return@setOnClickListener
+            for(loc in playerLocations)if(loc10ways.contains(loc)){
+                CheckAmbushProbability(10)
+                quitMap()
+                return@setOnClickListener
+            }
+            CannotGetThereMsg()
+            return@setOnClickListener
+        }
+
+        location11.setOnClickListener{
+            if(playerLocations.contains(11))return@setOnClickListener
+            for(loc in playerLocations)if(loc11ways.contains(loc)){
+                CheckAmbushProbability(11)
+                quitMap()
+                return@setOnClickListener
+            }
+            CannotGetThereMsg()
+            return@setOnClickListener
+        }
     }
 
     //return to main menu

@@ -4,23 +4,14 @@ package com.example.geldonialinebattles
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.PorterDuffXfermode
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
-import com.example.geldonialinebattles.Entities.Defender
 import kotlinx.android.synthetic.main.activity_battle.*
 import java.lang.Exception
-import android.content.res.Configuration.SCREENLAYOUT_SIZE_LARGE
-import android.content.res.Configuration.SCREENLAYOUT_SIZE_MASK
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import com.example.geldonialinebattles.Entities.GeneralDefender
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.random.Random
 
 
@@ -171,7 +162,15 @@ class BattleActivity : AppCompatActivity() {
             for(deadNo in battle.eneDeadNo){
                 enemiesPictures[deadNo].setImageResource(R.drawable.orcdead)
             }
-        }else {
+        }else if(enemyType == 2.toShort()){
+            for(deadNo in battle.defDeadNo){//for demons!
+                defendersPictures[deadNo].setImageResource(R.drawable.bluedead)
+            }
+            for(deadNo in battle.eneDeadNo){
+                enemiesPictures[deadNo].setImageResource(R.drawable.demondead)
+            }
+        }
+        else {
             for(deadNo in battle.defDeadNo){//musket balls!
                 defendersPictures[deadNo].setImageResource(R.drawable.bluedead)
             }
@@ -184,8 +183,8 @@ class BattleActivity : AppCompatActivity() {
             defCannon.setImageResource(R.drawable.bluecannon_destroy)
         if(battle.enemyCannon == null)
         {
-            if(battle.sharedDataClass.enemyType == 1.toShort())
-                eneCannon.setImageResource(R.drawable.bluefis)
+            if(enemyType == 2.toShort())
+                eneCannon.setImageResource(R.drawable.scary_dead)
             else    eneCannon.setImageResource(R.drawable.enemycannon_destroy)
         }
     }
@@ -196,8 +195,8 @@ class BattleActivity : AppCompatActivity() {
             defCannon.visibility = View.VISIBLE
         }
         if(battle.sharedDataClass.enemyHasCannon) {
-            if(battle.sharedDataClass.enemyType == 1.toShort())
-                eneCannon.setImageResource(R.drawable.orcwarrior)
+            if(battle.sharedDataClass.enemyType == 2.toShort())
+                eneCannon.setImageResource(R.drawable.scary_demon)
             else    eneCannon.setImageResource(R.drawable.redcannon)
             eneCannon.visibility = View.VISIBLE
         }
@@ -288,7 +287,7 @@ class BattleActivity : AppCompatActivity() {
             eneCloud.setImageResource(R.drawable.arrowcloud)//orks arrows!
             //play shooting orks
             battleSound.playBowSound()
-            battleSound.playDemonSound()
+            //battleSound.playDemonSound()
         }else if(enemyType == 2.toShort() && !isPlayer)battleSound.playDemonSound()
         else {
             eneCloud.setImageResource(R.drawable.firingcloud)

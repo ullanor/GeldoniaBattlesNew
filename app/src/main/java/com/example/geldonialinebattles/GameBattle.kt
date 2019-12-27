@@ -30,7 +30,7 @@ class GameBattle{
 
     fun setPlayerSkills(){
         if(PlayerData.defCannon != null && PlayerData.trainedCrew){
-            PlayerData.defCannon!!.shootingSkill = 100//todo for test
+            PlayerData.defCannon!!.shootingSkill = 70//todo for test
         }
         if(PlayerData.quickShooter)defAlwaysShootingFirst = true
         if(PlayerData.steadFast)defToTheDeath = true
@@ -47,11 +47,11 @@ class GameBattle{
     fun createEnemyCannon(){
         if(!sharedDataClass.enemyHasCannon)
             return
-        if(sharedDataClass.enemyType == 1.toShort()) {//todo demon as cannon
-            enemyCannon = Cannon("demon", 100, 80)
+        if(sharedDataClass.enemyType == 2.toShort()) {//todo demon as cannon
+            enemyCannon = Cannon("Scary Demon", 2, 80)
         }
         else {
-            enemyCannon = Cannon("cannon", 100, 75)
+            enemyCannon = Cannon("Cannon", 2, 50)
         }
     }
 
