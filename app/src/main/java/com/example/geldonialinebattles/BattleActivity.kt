@@ -275,7 +275,7 @@ class BattleActivity : AppCompatActivity() {
 
     // --------------------------------------------- shoooting --------------------------
     private fun PerformShooting(rand:Int){
-        Toast.makeText(this@BattleActivity, battle.enemies.count().toString(), Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this@BattleActivity, battle.enemies.count().toString(), Toast.LENGTH_SHORT).show()
         if(rand == 0) ShootingCloud(true)
         else {
             if(battle.defAlwaysShootingFirst) ShootingCloud(true)

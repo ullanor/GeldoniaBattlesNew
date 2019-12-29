@@ -48,7 +48,7 @@ class GameBattle{
         if(!sharedDataClass.enemyHasCannon)
             return
         if(sharedDataClass.enemyType == 2.toShort()) {//todo demon as cannon
-            enemyCannon = Cannon("Scary Demon", 2, 80)
+            enemyCannon = Cannon("Scary Demon", 3, 80)
         }
         else {
             enemyCannon = Cannon("Cannon", 2, 50)
@@ -70,8 +70,11 @@ class GameBattle{
         else PlayerData.defenders.count() < 3
     }
     private fun checkEneMorale():Boolean{
-        return if(sharedDataClass.enemyFightToTheEnd) enemies.count() <= 0
-        else enemies.count() < 3
+        return if(sharedDataClass.enemyFightToTheEnd) {
+            if(PlayerData.locationToAttack == 11.toShort() && enemyCannon == null)
+                true
+            else enemies.count() <= 0
+        } else enemies.count() < 3
     }
 
     //player is shooting

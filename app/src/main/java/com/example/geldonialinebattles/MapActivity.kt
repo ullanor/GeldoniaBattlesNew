@@ -11,6 +11,7 @@ import kotlin.random.Random
 class MapActivity : AppCompatActivity() {
     var GameLocations:Array<ImageView> = arrayOf()
     val playerLocations:List<Short> = PlayerData.playerLocations
+    val constantLocations:IntArray = intArrayOf(3,6,9,11)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +32,17 @@ class MapActivity : AppCompatActivity() {
     }
 
     private fun CheckAmbushProbability(location:Short){
-        val rand = Random.nextInt(0,3)
-        if(rand == 2 && PlayerData.playerLocations.count() >= 0){
+        val rand = Random.nextInt(0,12)
+        if(!constantLocations.contains(rand) && PlayerData.playerLocations.contains(rand.toShort())){
+            PlayerData.locationToAttack = rand.toShort()
+            PlayerData.playerLocations.remove(rand.toShort())
+            PlayerData.playerLocIsAttacked = true
+        }else{
+            PlayerData.playerLocIsAttacked = false
+            PlayerData.locationToAttack = location
+        }
+        Toast.makeText(this@MapActivity,"Random value: $rand",Toast.LENGTH_SHORT).show()
+/*        if(rand == 2){
             val toRem:Short = Random.nextInt(PlayerData.playerLocations.count()).toShort()
             PlayerData.locationToAttack = PlayerData.playerLocations[toRem.toInt()]
             PlayerData.playerLocations.removeAt(toRem.toInt())
@@ -40,7 +50,7 @@ class MapActivity : AppCompatActivity() {
         }else{
             PlayerData.playerLocIsAttacked = false
             PlayerData.locationToAttack = location
-        }
+        }*/
     }
 
     private fun setLocations(){

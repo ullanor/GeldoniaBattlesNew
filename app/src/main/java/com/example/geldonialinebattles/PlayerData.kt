@@ -7,8 +7,6 @@ import java.io.Serializable
 
 class PlayerData{
     companion object{
-        //var testString:String = "JOWISZ 2"
-        //var gameOver:Boolean = false
         var playerLocIsAttacked = false
 
         //to save -------------- player abilities
@@ -19,8 +17,8 @@ class PlayerData{
         //to save -------------- other
         var playerLocations:MutableList<Short> = mutableListOf(0)
         var defenders:MutableList<Entity> =
-            mutableListOf(EliteDefender("General",100,90))
-        var gold:Short = 5000
+            mutableListOf(EliteDefender())
+        var gold:Short = 1000
         var locationToAttack:Short = 66
         var defCannon:Cannon? = null
     }

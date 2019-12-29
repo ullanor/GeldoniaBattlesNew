@@ -46,7 +46,13 @@ class MainActivity : AppCompatActivity() {
             mapButton.visibility = View.INVISIBLE
             return
         }
-        if(PlayerData.playerLocations.count() == 0 && !PlayerData.playerLocIsAttacked){//todo GAMEOVER
+        if(PlayerData.defenders.count() < 3 && PlayerData.gold < 100){//todo GAMEOVER if no money and troops
+            battleNameText.text = "GAME OVER!"
+            mapButton.visibility = View.INVISIBLE
+            SaveButton.isVisible = false
+            return
+        }
+        if(!PlayerData.playerLocations.contains(0) && !PlayerData.playerLocIsAttacked){//todo GAMEOVER if bluecity is lost
             battleNameText.text = "GAME OVER!"
             mapButton.visibility = View.INVISIBLE
             SaveButton.isVisible = false
@@ -87,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         if(PlayerData.quickShooter)quickShootImage.setImageResource(R.drawable.seal_red)
         if(PlayerData.trainedCrew)trainedCrewImage.setImageResource(R.drawable.seal_black)
 
-        if(PlayerData.playerEXP >= 3){
+        if(PlayerData.playerEXP >= 10){
             if(!PlayerData.steadFast)steadFastButton.visibility = View.VISIBLE
             if(!PlayerData.quickShooter)quickShootButton.visibility = View.VISIBLE
             if(!PlayerData.trainedCrew)trainedCrewButton.visibility = View.VISIBLE
@@ -147,17 +153,17 @@ class MainActivity : AppCompatActivity() {
         }
         // player skills buttons ----------------------------------------------------------------
         steadFastButton.setOnClickListener{
-            PlayerData.playerEXP = (PlayerData.playerEXP - 3).toShort();
+            PlayerData.playerEXP = (PlayerData.playerEXP - 10).toShort();
             PlayerData.steadFast = true
             UpdateSkills()
         }
         quickShootButton.setOnClickListener{
-            PlayerData.playerEXP = (PlayerData.playerEXP - 3).toShort();
+            PlayerData.playerEXP = (PlayerData.playerEXP - 10).toShort();
             PlayerData.quickShooter = true
             UpdateSkills()
         }
         trainedCrewButton.setOnClickListener{
-            PlayerData.playerEXP = (PlayerData.playerEXP - 3).toShort();
+            PlayerData.playerEXP = (PlayerData.playerEXP - 10).toShort();
             PlayerData.trainedCrew = true
             UpdateSkills()
         }
@@ -330,7 +336,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(
                 this@MainActivity,
                 "Saving file to $filesDir/$file",
-                Toast.LENGTH_LONG
+                Toast.LENGTH_SHORT
             ).show()
         } catch (e: Exception) {
             Toast.makeText(this@MainActivity, e.toString(), Toast.LENGTH_SHORT).show()
