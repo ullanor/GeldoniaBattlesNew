@@ -268,23 +268,25 @@
             android:textColor="#FF0000"
             android:textColorHighlight="#FF9800"
             android:textColorLink="#FFEB3B"
-            android:textSize="20dp" />
+            android:textSize="24dp" />
 
         <Button
             android:id="@+id/moveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="24dp"
             android:layout_gravity="center"
             android:text="~ Move! ~" />
 
-        <Button
+        <ImageButton
             android:id="@+id/cannonButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
             android:layout_gravity="center"
-            android:text="Cannon Rot" />
+            android:scaleType="fitCenter"
+            android:background="@drawable/rotate_button"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <TextView
             android:id="@+id/battleDifficultyText"

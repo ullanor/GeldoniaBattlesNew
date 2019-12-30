@@ -208,6 +208,7 @@
             android:layout_gravity="center"
             android:text="LOAD"
             android:textSize="26dp" />
+
         </LinearLayout>
 
     </LinearLayout>

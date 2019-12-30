@@ -12,6 +12,7 @@ class MapActivity : AppCompatActivity() {
     var GameLocations:Array<ImageView> = arrayOf()
     val playerLocations:List<Short> = PlayerData.playerLocations
     val constantLocations:IntArray = intArrayOf(3,6,9,11)
+    var isGameExit:Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +22,10 @@ class MapActivity : AppCompatActivity() {
             location6,location7,location8,location9,location10,location11)
         setLocationsOwnership()
         setLocations()
+    }
+    override fun onPause() {
+        super.onPause()
+        if(isGameExit) stopService(Intent(this,MusicService::class.java))
     }
 
     private fun setLocationsOwnership(){
@@ -189,6 +194,7 @@ class MapActivity : AppCompatActivity() {
 
     //return to main menu
     private fun quitMap(){
+        isGameExit = false
         val intent = Intent(this,MainActivity::class.java)
         startActivity(intent)
     }

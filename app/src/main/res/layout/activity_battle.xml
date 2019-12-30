@@ -261,7 +261,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="5dp"
             android:shadowColor="#000000"
             android:text="~ Fire! ~"
             android:textColor="#FF0000"
@@ -277,13 +276,14 @@
             android:layout_gravity="center"
             android:text="~ Move! ~" />
 
-        <Button
+        <ImageButton
             android:id="@+id/cannonButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:layout_height="35dp"
             android:layout_gravity="center"
-            android:text="Cannon Rot" />
+            android:scaleType="fitCenter"
+            android:background="@drawable/rotate_button"
+            android:layout_marginTop="5dp"/>
 
         <TextView
             android:id="@+id/battleDifficultyText"

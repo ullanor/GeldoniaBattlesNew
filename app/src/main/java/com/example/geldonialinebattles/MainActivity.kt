@@ -11,16 +11,20 @@ import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.info_game.view.*
 import android.content.Context
 import android.content.DialogInterface
+import android.nfc.Tag
+import android.util.Log
 import android.view.WindowManager
 import java.io.*
 import java.lang.Exception
 import androidx.core.view.isVisible
+import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
     val gameMain:GameMain = GameMain()
     var isBarracksVisible:Boolean = false
     var musicOn:Boolean = true
+    var isGameExit:Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +39,10 @@ class MainActivity : AppCompatActivity() {
             ToastMe("Welcome to Geldonia!")
             serializeTest()
         }
+    }
+    override fun onPause() {
+        super.onPause()
+        if(isGameExit) stopService(Intent(this,MusicService::class.java))
     }
 
     private fun getAttackLocation(){
@@ -290,14 +298,13 @@ class MainActivity : AppCompatActivity() {
     //start battle test (change activity to battle and pass battle id/name
 
     private fun moveToStartBattle(){
+        isGameExit = false
         val intent = Intent(this,BattleActivity::class.java)
-        //intent.putExtra("battleID",4)
         startActivity(intent)
     }
 
-    //show map (change activity to map)
-
     private fun moveToMap(){
+        isGameExit = false
         val intent = Intent(this,MapActivity::class.java)
         startActivity(intent)
     }

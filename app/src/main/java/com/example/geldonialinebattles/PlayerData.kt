@@ -18,7 +18,7 @@ class PlayerData{
         var playerLocations:MutableList<Short> = mutableListOf(0)
         var defenders:MutableList<Entity> =
             mutableListOf(EliteDefender())
-        var gold:Short = 1000
+        var gold:Short = 1500
         var locationToAttack:Short = 66
         var defCannon:Cannon? = null
     }

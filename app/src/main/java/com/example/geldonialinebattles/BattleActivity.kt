@@ -22,6 +22,7 @@ class BattleActivity : AppCompatActivity() {
     var defendersPictures:Array<ImageView> = arrayOf()
     var enemyType:Short = 0
     lateinit var battleSound:SoundPlayer
+    var isGameExit:Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,10 @@ class BattleActivity : AppCompatActivity() {
         StartBattle()
         SetCloudSize()
         GetNameMapAndDiff()
+    }
+    override fun onPause() {
+        super.onPause()
+        if(isGameExit) stopService(Intent(this,MusicService::class.java))
     }
 
     private fun GetEnemiesPictures():Array<ImageView>{
@@ -257,6 +262,7 @@ class BattleActivity : AppCompatActivity() {
                 }
                 PlayerData.locationToAttack = 66
                 PlayerData.playerLocIsAttacked = false
+                isGameExit = false
                 val intent = Intent(this,MainActivity::class.java)
                 startActivity(intent)
             }
