@@ -150,5 +150,28 @@
             app:srcCompat="@drawable/flag_demon"
             android:scaleType="fitCenter"
             android:background="@null"/>
+
+        <ImageButton
+            android:id="@+id/location12"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_row="1"
+            android:layout_column="5"
+            app:srcCompat="@drawable/flag_red"
+            android:scaleType="fitCenter"
+            android:background="@null"/>
+
+        <Button
+            android:id="@+id/waitButton"
+            android:layout_width="60dp"
+            android:layout_height="35dp"
+            android:layout_row="5"
+            android:layout_column="0"
+            android:layout_marginLeft="15dp"
+            android:background="#305C69"
+            android:scaleType="fitCenter"
+            android:text="WAIT"
+            android:textColor="#FF9800"
+            android:textSize="22sp" />
     </GridLayout>
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_map.*
 import kotlin.random.Random
+//ship texture: http://www.pngmart.com/files/6/Ship-PNG-Transparent-Image.png
 
 class MapActivity : AppCompatActivity() {
     var GameLocations:Array<ImageView> = arrayOf()
@@ -19,7 +20,7 @@ class MapActivity : AppCompatActivity() {
         setContentView(R.layout.activity_map)
 
         GameLocations = arrayOf(location0,location1,location2,location3,location4,location5,
-            location6,location7,location8,location9,location10,location11)
+            location6,location7,location8,location9,location10,location11,location12)
         setLocationsOwnership()
         setLocations()
     }
@@ -37,7 +38,7 @@ class MapActivity : AppCompatActivity() {
     }
 
     private fun CheckAmbushProbability(location:Short){
-        val rand = Random.nextInt(0,12)
+        val rand = Random.nextInt(0,13)
         if(!constantLocations.contains(rand) && PlayerData.playerLocations.contains(rand.toShort())){
             PlayerData.locationToAttack = rand.toShort()
             PlayerData.playerLocations.remove(rand.toShort())
@@ -56,6 +57,14 @@ class MapActivity : AppCompatActivity() {
             PlayerData.playerLocIsAttacked = false
             PlayerData.locationToAttack = location
         }*/
+    }
+
+    private fun ChooseDefendTarget(){
+        val rand = Random.nextInt(0,PlayerData.playerLocations.count())
+        PlayerData.locationToAttack = rand.toShort()
+        PlayerData.playerLocations.remove(rand.toShort())
+        PlayerData.playerLocIsAttacked = true
+        Toast.makeText(this@MapActivity,"Random value: $rand",Toast.LENGTH_SHORT).show()
     }
 
     private fun setLocations(){
@@ -190,6 +199,23 @@ class MapActivity : AppCompatActivity() {
             CannotGetThereMsg()
             return@setOnClickListener
         }
+
+        location12.setOnClickListener{//todo
+            if(playerLocations.contains(12))return@setOnClickListener
+            for(loc in playerLocations)if(loc12ways.contains(loc)){
+                CheckAmbushProbability(12)
+                quitMap()
+                return@setOnClickListener
+            }
+            CannotGetThereMsg()
+            return@setOnClickListener
+        }
+
+        //wait button functionality
+        waitButton.setOnClickListener{
+            ChooseDefendTarget()
+            quitMap()
+        }
     }
 
     //return to main menu
@@ -211,5 +237,6 @@ class MapActivity : AppCompatActivity() {
     val loc9ways:ShortArray = shortArrayOf(8,10)
     val loc10ways:ShortArray = shortArrayOf(7,8,9,11)
     val loc11ways:ShortArray = shortArrayOf(7,10)
+    val loc12ways:ShortArray = shortArrayOf(3)
 
 }

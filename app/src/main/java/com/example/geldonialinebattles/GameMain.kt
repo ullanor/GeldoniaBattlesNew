@@ -1,30 +1,35 @@
 package com.example.geldonialinebattles
 
-import com.example.geldonialinebattles.Entities.Cannon
-import com.example.geldonialinebattles.Entities.Defender
-import com.example.geldonialinebattles.Entities.EliteDefender
-import com.example.geldonialinebattles.Entities.GeneralDefender
+import com.example.geldonialinebattles.Entities.*
 
 class GameMain {
 
     var fusiliersCount:Short = 0
     var grenadiersCount:Short = 0
     var generalCount:Short = 0
+    var exclusiveCount:Short = 0;
 
     fun countDefendersByType(){
         fusiliersCount = 0
         grenadiersCount = 0
         generalCount = 0
+        exclusiveCount = 0
         for(defender in PlayerData.defenders){
             when (defender) {
                 is EliteDefender -> grenadiersCount++
                 is GeneralDefender -> generalCount++
+                is ExclusiveDefender -> exclusiveCount++
                 else -> fusiliersCount++
             }
         }
     }
 
     //defender shop operations -----------------------------------------
+    fun buyExclusive(){
+        PlayerData.defenders.add(ExclusiveDefender())
+        PlayerData.playerEXP = (PlayerData.playerEXP - 5).toShort()
+    }
+
     fun buyFusilier(){
         PlayerData.defenders.add(Defender())
         PlayerData.gold = (PlayerData.gold - 50).toShort()
@@ -50,6 +55,15 @@ class GameMain {
         PlayerData.gold = (PlayerData.gold - 1000).toShort()
     }
     // removing defenders ----------------------------------------
+    fun remExclusive(){
+        for(def in PlayerData.defenders){
+            if(def is ExclusiveDefender){
+                PlayerData.defenders.remove(def)
+                break
+            }
+        }
+    }
+
     fun remFusilier(){
         PlayerData.gold = (PlayerData.gold + 25).toShort()
         for(def in PlayerData.defenders){

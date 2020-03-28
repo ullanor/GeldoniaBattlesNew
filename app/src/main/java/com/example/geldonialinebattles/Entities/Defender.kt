@@ -20,3 +20,9 @@ class GeneralDefender(name: String = "General",health: Int = 2,shootingSkill: In
 
     override val EntityImage:Int = R.drawable.bluegeneral
 }
+//exclusive glory points trooper TODO
+open class ExclusiveDefender(name: String = "Exclusive", health: Int = 2, shootingSkill: Int = 30)
+    :Entity(name,health,shootingSkill){
+
+    override val EntityImage:Int = R.drawable.blueorc
+}

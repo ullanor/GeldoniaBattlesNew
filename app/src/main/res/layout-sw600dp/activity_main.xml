@@ -72,7 +72,7 @@
             android:id="@+id/playerSkillsImages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp">
+            android:layout_marginTop="10dp">
 
             <ImageView
                 android:id="@+id/trainedCrewImage"
@@ -132,7 +132,47 @@
             </LinearLayout>
         </TableRow>
 
+        <!--New ORC trooper for blue android:background="#D3C371"-->
+        <TableRow
+            android:id="@+id/playerAuxiliaryTrooperOpt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#D3C371">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="3">
+
+                <Button
+                    android:id="@+id/buyExclusiveTrooper"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/blueorc" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:text="X0\n5Gp"
+                    android:textColor="#156118"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/remExclusiveTrooper"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="X"
+                    android:textColor="#FF0000"
+                    android:textSize="10sp"
+                    android:layout_marginLeft="40dp"/>
+
+            </LinearLayout>
+        </TableRow>
     </TableLayout>
 
     <LinearLayout
@@ -239,7 +279,8 @@
             android:id="@+id/fusRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#D3C371">
+            android:background="#D3C371"
+            android:layout_marginTop="10dp">
 
             <ImageButton
                 android:id="@+id/buyFusilierButton"

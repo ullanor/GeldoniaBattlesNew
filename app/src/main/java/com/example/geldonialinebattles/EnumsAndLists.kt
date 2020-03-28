@@ -16,7 +16,8 @@ enum class BattleLocation(val location:Short){
     desert(8),
     redOutpost(9),
     sands(10),
-    hell(11);
+    hell(11),
+    ship(12);
 
     companion object {
         private val values = values()
@@ -37,5 +38,6 @@ enum class BattleLocationMap(val mapLoc:Int){
     desert(R.drawable.mapdesert),
     redOutpost(R.drawable.outpostred),
     sands(R.drawable.mapdesert),
-    hell(R.drawable.maphell);
+    hell(R.drawable.maphell),
+    ship(R.drawable.mapsea);
 }

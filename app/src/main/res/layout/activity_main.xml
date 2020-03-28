@@ -131,8 +131,49 @@
 
             </LinearLayout>
         </TableRow>
+        <!--New ORC trooper for blue android:background="#D3C371"-->
+        <TableRow
+            android:id="@+id/playerAuxiliaryTrooperOpt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="#D3C371">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_span="3">
 
+                <Button
+                    android:id="@+id/buyExclusiveTrooper"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/blueorc" />
+
+                <TextView
+                    android:id="@+id/excText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="7dp"
+                    android:text="X0\n5Gp"
+                    android:textColor="#09570B"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/remExclusiveTrooper"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="0dp"
+                    android:text="X"
+                    android:textColor="#FF0000"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+        </TableRow>
     </TableLayout>
 
     <LinearLayout

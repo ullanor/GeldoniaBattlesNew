@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     private fun getAttackLocation(){
         mapButton.visibility = View.VISIBLE
         SaveButton.isVisible = true
-        if(PlayerData.playerLocations.count() == 12){//todo VICTORY! test with 5 locations
+        if(PlayerData.playerLocations.count() == 13){//todo VICTORY! test with 5 locations
             battleNameText.text = "FULL VICTORY!"
             MainMenu.setBackgroundResource(R.drawable.victorywall)
             mapButton.visibility = View.INVISIBLE
@@ -205,6 +205,23 @@ class MainActivity : AppCompatActivity() {
             isBarracksVisible = true
             CountDefendersByType()
         }
+        //exclusive trooper ---------------------------------------
+        buyExclusiveTrooper.setOnClickListener{
+            if(PlayerData.playerEXP < 5 || PlayerData.defenders.count() >= 10){
+                Toast.makeText(this@MainActivity,"Not enough Glory Points or too many defenders!",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            gameMain.buyExclusive()
+            UpdateUI()
+            CountDefendersByType()
+            UpdateSkills()
+        }
+        //remExc
+        remExclusiveTrooper.setOnClickListener{
+            gameMain.remExclusive()
+            UpdateUI()
+            CountDefendersByType()
+        }
 
         buyFusilierButton.setOnClickListener{
             if(PlayerData.gold < 50.toShort()|| PlayerData.defenders.count() >= 10){
@@ -286,12 +303,18 @@ class MainActivity : AppCompatActivity() {
             greText.text = "X"+ gameMain.grenadiersCount + " 300g"
             genText.text = "X"+ gameMain.generalCount + " 750g"
             canText.text = gameMain.cannonStatus()
+            //for exclusive hiring -> when player has like 4 locations or more...
+            if(PlayerData.playerLocations.count() >= 0){
+                excText.text = "X"+gameMain.exclusiveCount + "\n5Gp"
+                playerAuxiliaryTrooperOpt.visibility = View.VISIBLE
+            }
         }
         else{
             fusRow.visibility = View.INVISIBLE
             greRow.visibility = View.INVISIBLE
             genRow.visibility = View.INVISIBLE
             canRow.visibility = View.INVISIBLE
+            playerAuxiliaryTrooperOpt.visibility = View.INVISIBLE
         }
     }
 

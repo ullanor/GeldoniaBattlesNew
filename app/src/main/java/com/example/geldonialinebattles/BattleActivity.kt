@@ -164,12 +164,18 @@ class BattleActivity : AppCompatActivity() {
             for(deadNo in battle.defDeadNo){//for orks arrows!
                 defendersPictures[deadNo].setImageResource(R.drawable.bluedeadarrow)
             }
+            for(deadNo in battle.defExcDeadNo){//exc
+                defendersPictures[deadNo].setImageResource(R.drawable.blueorcdeadarrow)
+            }
             for(deadNo in battle.eneDeadNo){
                 enemiesPictures[deadNo].setImageResource(R.drawable.orcdead)
             }
         }else if(enemyType == 2.toShort()){
             for(deadNo in battle.defDeadNo){//for demons!
                 defendersPictures[deadNo].setImageResource(R.drawable.bluedead)
+            }
+            for(deadNo in battle.defExcDeadNo){//exc
+                defendersPictures[deadNo].setImageResource(R.drawable.blueorcdead)
             }
             for(deadNo in battle.eneDeadNo){
                 enemiesPictures[deadNo].setImageResource(R.drawable.demondead)
@@ -178,6 +184,9 @@ class BattleActivity : AppCompatActivity() {
         else {
             for(deadNo in battle.defDeadNo){//musket balls!
                 defendersPictures[deadNo].setImageResource(R.drawable.bluedead)
+            }
+            for(deadNo in battle.defExcDeadNo){//exc
+                defendersPictures[deadNo].setImageResource(R.drawable.blueorcdead)
             }
             for(deadNo in battle.eneDeadNo){
                 enemiesPictures[deadNo].setImageResource(R.drawable.reddead)

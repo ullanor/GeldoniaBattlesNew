@@ -21,6 +21,7 @@ class GameBattle{
     var battleStatus:Char = 'X'
     //var battleID:Short = 0
     var defDeadNo:MutableList<Int> = mutableListOf() //list of dead bodies
+    var defExcDeadNo:MutableList<Int> = mutableListOf()//list of exclusive dead bodies
     var eneDeadNo:MutableList<Int> = mutableListOf()
 
     var defCannonPosition:Int = 0 //rotate player cannon - 3 positions!
@@ -193,7 +194,10 @@ class GameBattle{
             hitCounter++
             defender = PlayerData.defenders[Random.nextInt(PlayerData.defenders.count())]
             if(defender.AssessDamage()){
-                defDeadNo.add(defender.myGamePictueNo)
+                if(defender is ExclusiveDefender)
+                    defExcDeadNo.add(defender.myGamePictueNo)
+                else
+                    defDeadNo.add(defender.myGamePictueNo)
                 deadCounter++
                 PlayerData.defenders.remove(defender)
             }
@@ -236,7 +240,10 @@ class GameBattle{
         for(number in pictureHitByCannon){
             for(defender in PlayerData.defenders) {
                 if(defender.myGamePictueNo == number) {
-                    defDeadNo.add(defender.myGamePictueNo)
+                    if(defender is ExclusiveDefender)
+                        defExcDeadNo.add(defender.myGamePictueNo)
+                    else
+                        defDeadNo.add(defender.myGamePictueNo)
                     dead++
                     PlayerData.defenders.remove(defender)
                     break
